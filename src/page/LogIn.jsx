@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-// import FormData from "form-data";
+import FormData from "form-data";
 
 import Input from "../atom/Input";
 import commonStore, { userStore } from "../store/commonStore";
 import Button from "../atom/Button";
-// import logoLong from "../static/logo-long1.svg";
+import logoLong from "../static/logo-long1.svg";
 
 const LoginStyle = styled.div`
   background-color: var(--eciBlue);
@@ -74,7 +74,6 @@ const LoginStyle = styled.div`
         font-family: "Noto Sans KR", sans-serif;
         font-weight: 800;
         outline: 0;
-        /* border: white solid 1px; */
       }
     }
   }
@@ -114,11 +113,12 @@ export default function LogIn() {
   };
   return (
     <LoginStyle>
-      {/* <img src={logoLong} alt="" className="logoTop" /> */}
+      aaa
+      <img src={logoLong} alt="" className="logoTop" />
       <div className="center">
         <div className="title">
           Synchronize Every Work <br />
-          {/* <img src={logoLong} alt="" className="logo" /> */}
+          <img src={logoLong} alt="" className="logo" />
         </div>
         <div className="inputContainer">
           <Input
@@ -142,11 +142,10 @@ export default function LogIn() {
         </div>
         <div className="buttonContainer">
           <Button
-            backgroundColor="white"
+            // backgroundColor="white"
             color="var(--eciBlue)"
             width="320px"
             height="50px"
-            fontSize="14px"
             onClick={sendLogIn}
             condition={!!id && !!password}
           >

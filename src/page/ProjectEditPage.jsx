@@ -8,11 +8,12 @@ import Button from "../atom/Button";
 import RouteInitSection from "../organism/RouteInitSection";
 import SearchBox from "../organism/SearchBox";
 import DataSearchBox from "../organism/DataSearchBox";
-import { useappendProjectForm, useSave } from "../utility/Utility";
 
-export default function ProjectAddPage() {
+export default function ProjectEditPage() {
   // 페이지 상태 관리
   const {
+    isLoading,
+    setisLoading,
     isRouteActive,
     // searchBox
     DataSearchBoxType,
@@ -32,22 +33,6 @@ export default function ProjectAddPage() {
     setsearchBoxType,
   } = projectStore();
 
-  const projectstore = projectStore();
-  const saveProject = useSave(
-    "project",
-    useappendProjectForm,
-    projectstore
-    // temp,
-    // edit,
-  );
-  const saveTempProject = useSave(
-    "project",
-    useappendProjectForm,
-    projectstore,
-    true
-    // edit,
-  );
-  // 페이지 탈출시 init
   useEffect(() => {
     // init
   }, []);
@@ -79,7 +64,6 @@ export default function ProjectAddPage() {
           />,
         ]}
         tempButtonTitle="Save as Draft"
-        tempButtonOnclick={saveTempProject}
       >
         <ProjectInformationSection readOnly={isRouteActive} />
         <AttachmentSection
@@ -94,7 +78,7 @@ export default function ProjectAddPage() {
             width="100%"
             height="30px"
             color="white"
-            onClick={saveProject}
+            // onClick={saveProject}
             condition={!!true}
           >
             Save and Route
