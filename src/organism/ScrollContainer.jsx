@@ -1,17 +1,20 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
+import Button from "../atom/Button";
 import ScrollController from "../molecule/ScrollController";
+import { TempButtonContainerStyle } from "../Style";
 
 const ScrollContainerStyle = styled.div`
   width: 100%;
   display: flex;
+  position: relative;
 `;
 const FormSectionStyle = styled.div`
   position: relative;
-  width: calc(58% - 100px);
+  width: calc(55% - 120px);
   height: calc(100vh - 230px); //여기 픽셀 수정
   overflow: scroll;
-  padding-left: 36px;
+  padding-left: 60px;
   padding-right: 1.5%;
 
   ::-webkit-scrollbar {
@@ -30,12 +33,23 @@ const FormSectionStyle = styled.div`
   }
 `;
 const SearchBoxSectionStyle = styled.div`
-  width: 42%;
+  width: 45%;
+  position: relative;
+  :nth-child(1) {
+    position: absolute;
+    left: 0;
+  }
+  :nth-child(2) {
+    position: absolute;
+    left: 0;
+  }
 `;
 export default function ScrollContainer({
   children, // form에 들어갈 애들
   scrollRefList, // [[ref,name],[]]
   searchBoxComponent,
+  tempButtonTitle, // temp에 들어갈 버튼 이름
+  tempButtonOnclick,
 }) {
   const formRef = useRef();
 
@@ -46,8 +60,22 @@ export default function ScrollContainer({
         buttonArray={scrollRefList}
         scrollRef={formRef}
       />
-      <FormSectionStyle ref={formRef}>a{children}</FormSectionStyle>
-      <SearchBoxSectionStyle>b{searchBoxComponent}</SearchBoxSectionStyle>
+      <TempButtonContainerStyle>
+        {/* {tempButtonTitle && !readOnly && ( */}
+        <Button
+          type="button"
+          backgroundColor="transparent"
+          onClick={tempButtonOnclick}
+          fontSize="12px"
+          color="var(--textDarkGray)"
+          condition
+        >
+          {tempButtonTitle}
+        </Button>
+        {/* )} */}
+      </TempButtonContainerStyle>
+      <FormSectionStyle ref={formRef}>{children}</FormSectionStyle>
+      <SearchBoxSectionStyle>{searchBoxComponent}</SearchBoxSectionStyle>
     </ScrollContainerStyle>
   );
 }

@@ -20,3 +20,17 @@ export const ListPageStyle = styled.div`
     align-items: center;
   }
 `;
+export const TempButtonContainerStyle = styled.div`
+  height: 40px;
+  display: flex;
+  position: absolute;
+  top: -62px;
+  right: 46%;
+`;
+export const GridContainerStyle = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: repeat(${(props) => props.rows}, 60px);
+  grid-column-gap: 15px;
+  grid-row-gap: 10px;
+`;

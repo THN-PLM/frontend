@@ -9,6 +9,9 @@ import NotFound from "./page/NotFound";
 import ProjectModule from "./x-module/ProjectModule";
 import ProjectListPage from "./page/ProjectListPage";
 import ProjectAddPage from "./page/ProjectAddPage";
+import ProjectDetailPage from "./page/ProjectDetailPage";
+import ProjectEditPage from "./page/ProjectEditPage";
+import commonStore from "./store/commonStore";
 
 const AppStyle = styled.div`
   width: 100%;
@@ -30,6 +33,7 @@ const AppStyle = styled.div`
 `;
 function App() {
   const [isHover, setisHover] = useState(false);
+  // const { isLogged } = commonStore();
   const isLogged = true;
   return (
     <div className="App">
@@ -51,6 +55,11 @@ function App() {
               <Route path="/project" element={<ProjectModule />}>
                 <Route path="list" element={<ProjectListPage />} />
                 <Route path="add" element={<ProjectAddPage />} />
+                <Route
+                  path="detail/:projectId"
+                  element={<ProjectDetailPage />}
+                />
+                <Route path="edit/:projectId" element={<ProjectEditPage />} />
               </Route>
 
               {/* <Route path="/item" element={<ItemModule />}>
