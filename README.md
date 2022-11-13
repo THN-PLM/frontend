@@ -1,3 +1,11 @@
+### dev 브랜치에서 작업하는 중입니다.
+
+- npm install
+- npm start
+
+
+
+아래는 CRA에 대한 설명
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
