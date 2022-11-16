@@ -2,15 +2,117 @@ import create from "zustand";
 
 const projectStore = create((set, get) => ({
   // project states
-  projectType: "", // {id,name?}
-  setprojectType: (val) => {
-    set(() => ({ projectType: val }));
+  type: "", //  post시는 projectTypeId : 1,2
+  settype: (val) => {
+    set(() => ({ type: val }));
   },
-  projectPeriod: 0, // all도, 초도, proto, p1 => 0,1,2,숫자로
-  setprojectPeriod: (val) => {
-    set(() => ({ projectPeriod: val }));
+  period: "", // all도, 초도, proto, p1 => "",1,2,숫자로
+  setperiod: (val) => {
+    set(() => ({ period: val }));
   },
+  number: "", // 문자열
+  setnumber: (val) => {
+    set(() => ({ number: val }));
+  },
+  name: "", // 문자열
+  setname: (val) => {
+    set(() => ({ name: val }));
+  },
+  allDoStartPeriod: "", // 날짜
+  setallDoStartPeriod: (val) => {
+    set(() => ({ allDoStartPeriod: val }));
+  },
+  allDoOverPeriod: "", //  날짜
+  setallDoOverPeriod: (val) => {
+    set(() => ({ allDoOverPeriod: val }));
+  },
+  protoStartPeriodd: "", //  날짜
+  setprotoStartPeriodd: (val) => {
+    set(() => ({ protoStartPeriodd: val }));
+  },
+  protoOverPeriod: "", //  날짜
+  setprotoOverPeriod: (val) => {
+    set(() => ({ protoOverPeriod: val }));
+  },
+  p1StartPeriodd: "", // 날짜
+  setp1StartPeriodd: (val) => {
+    set(() => ({ p1StartPeriodd: val }));
+  },
+  p1OverPeriod: "", // 날짜
+  setp1OverPeriod: (val) => {
+    set(() => ({ p1OverPeriod: val }));
+  },
+  p2StartPeriod: "", //  날짜
+  setp2StartPeriod: (val) => {
+    set(() => ({ p2StartPeriod: val }));
+  },
+  p2OverPeriod: "", // 날짜
+  setp2OverPeriod: (val) => {
+    set(() => ({ p2OverPeriod: val }));
+  },
+  mStartPeriod: "", // 날짜
+  setmStartPeriod: (val) => {
+    set(() => ({ mStartPeriod: val }));
+  },
+  mOverPeriod: "", //  날짜
+  setmOverPeriod: (val) => {
+    set(() => ({ mOverPeriod: val }));
+  },
+  productId: "", // 정수
+  setproductId: (val) => {
+    set(() => ({ productId: val }));
+  },
+  buyerOrganizationId: "", // post할때는 buyerOrganizationIdOrganizationId
+  //   {
+  //     "id": 1,
+  //     "code1": "12",
+  //     "code2": "23",
+  //     "history1": "해외",
+  //     "history2": "나노 하이텍"
+  // },
+  setbuyerOrganizationId: (val) => {
+    set(() => ({ buyerOrganizationId: val }));
+  },
+  produceOrganizationId: "", // post할때는producerOrganizationId
+  //   {
+  //     "id": 1,
+  //     "code1": "123",
+  //     "code2": "7878",
+  //     "history1": "본사",
+  //     "history2": "1공장"
+  // }
+  setproduceOrganizationId: (val) => {
+    set(() => ({ producerOrganizationId: val }));
+  },
+
   // init
+  initProjectModule: () => {
+    set(() => ({
+      type: "",
+      period: "",
+      number: "",
+      name: "",
+      allDoStartPeriod: "",
+      allDoOverPeriod: "",
+      protoStartPeriod: "",
+      protoOverPeriod: "",
+      p1StartPeriod: "",
+      p1OverPeriod: "",
+      p2StartPeriod: "",
+      p2OverPeriod: "",
+      mStartPeriod: "",
+      mOverPeriod: "",
+      productId: "",
+      buyerOrganizationId: "",
+      produceOrganizationId: "",
+      //  default
+    }));
+  },
+  getIsConditionFullfill: () => {
+    let condition = false;
+    condition = !!get().type && !!get().productId;
+    return condition;
+  },
   // default/////////////////////////////////////
   // savefunction
   isRouteActive: false,

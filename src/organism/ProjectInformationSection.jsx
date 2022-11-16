@@ -15,6 +15,7 @@ import TableIndexRow from "../atom/TableIndexRow";
 import TableRow from "../atom/TableRow";
 import ModalBox from "./ModalBox";
 import Button from "../atom/Button";
+import DataSearchBox from "./DataSearchBox";
 
 export default function ProjectInformationSection({
   readOnly,
@@ -24,8 +25,48 @@ export default function ProjectInformationSection({
   // 상태state
   const [isModalBox, setisModalBox] = useState(false);
   // states from store
-  const { projectType, projectPeriod, setsearchBoxType, setinformationRef } =
-    projectStore();
+  const {
+    dataSearchBoxType,
+    setsearchBoxType,
+    setdataSearchBoxType,
+    setinformationRef,
+    type,
+    period,
+    number,
+    name,
+    allDoStartPeriod,
+    allDoOverPeriod,
+    protoStartPeriod,
+    protoOverPeriod,
+    p1StartPeriod,
+    p1OverPeriod,
+    p2StartPeriod,
+    p2OverPeriod,
+    mStartPeriod,
+    mOverPeriod,
+    productId,
+    buyerOrganizationId,
+    produceOrganizationId,
+    carTypeId,
+    settype,
+    setperiod,
+    setnumber,
+    setname,
+    setallDoStartPeriod,
+    setallDoOverPeriod,
+    setprotoStartPeriod,
+    setprotoOverPeriod,
+    setp1StartPeriod,
+    setp1OverPeriod,
+    setp2StartPeriod,
+    setp2OverPeriod,
+    setmStartPeriod,
+    setmOverPeriod,
+    setproductId,
+    setbuyerOrganizationId,
+    setproduceOrganizationId,
+    setcarTypeId,
+  } = projectStore();
   // scroll을 위한 ref관리
   const informationRef = useRef();
   useEffect(() => {
@@ -50,18 +91,19 @@ export default function ProjectInformationSection({
           width="100%"
           height="40px"
           placeholder="Project Number"
-          //   state={clientItemNumber}
-          //   setState={setclientItemNumber}
-          readOnly={readOnly}
+          state={number}
+          setState={setnumber}
+          readOnly
           required
+          backgroundColor="var(--textGray)"
         />
 
         <AnimationSelectBox
           width="100%"
           height="40px"
           placeholder="개발 유형"
-          //   state={projectType.id}
-          //   setState={setprojectType}
+          state={type}
+          setState={settype}
           required
           readOnly={readOnly}
         >
@@ -69,39 +111,39 @@ export default function ProjectInformationSection({
           <option value="2">선행개발</option>
         </AnimationSelectBox>
       </GridContainerStyle>
-      {/* 양산개발일 때 projectPeriod */}
-      {projectType && (
+      {/* 양산개발일 때 period */}
+      {type && (
         <PeriodBox
           leftText="Project Period"
-          title={projectType === "1" ? "All도" : "초도"}
+          title={type === "1" ? "All도" : "초도"}
           required
-          //   startState
-          //   startSetState
-          //   overState
-          //   overSetState
-          readOnly={projectPeriod > 1}
+          startState={type === "1" ? allDoStartPeriod : mStartPeriod}
+          startSetState={type === "1" ? setallDoStartPeriod : setmStartPeriod}
+          overState={type === "1" ? allDoOverPeriod : mOverPeriod}
+          overSetState={type === "1" ? setallDoOverPeriod : setmOverPeriod}
+          readOnly={period > 1}
         />
       )}
-      {projectPeriod > 1 && (
+      {period > 1 && (
         <PeriodBox
           title="Proto"
           required
-          //   startState
-          //   startSetState
-          //   overState
-          //   overSetState
-          readOnly={projectPeriod > 1}
+          startState={protoStartPeriod}
+          startSetState={setprotoStartPeriod}
+          overState={protoOverPeriod}
+          overSetState={setprotoOverPeriod}
+          readOnly={period > 1}
         />
       )}
-      {projectPeriod > 2 && (
+      {period > 2 && (
         <PeriodBox
           title="P1"
           required
-          //   startState
-          //   startSetState
-          //   overState
-          //   overSetState
-          readOnly={projectPeriod > 1}
+          startState={p1StartPeriod}
+          startSetState={setp1StartPeriod}
+          overState={p1OverPeriod}
+          overSetState={setp1OverPeriod}
+          readOnly={period > 1}
         />
       )}
       <GridContainerStyle rows={1}>
@@ -109,9 +151,11 @@ export default function ProjectInformationSection({
           width="100%"
           height="40px"
           placeholder="생산조직"
-          //   state={carTypeId && carTypeId.name}
+          isNow={dataSearchBoxType === "produceOrganizationId"}
+          state={produceOrganizationId && produceOrganizationId.history2}
           onClick={() => {
-            setsearchBoxType("carTypeId");
+            // setsearchBoxType("");
+            setdataSearchBoxType("produceOrganizationId");
           }}
           readOnly={readOnly}
         />
@@ -119,23 +163,14 @@ export default function ProjectInformationSection({
           width="100%"
           height="40px"
           placeholder="발주처"
-          //   state={carTypeId && carTypeId.name}
+          isNow={dataSearchBoxType === "buyerOrganizationId"}
+          state={buyerOrganizationId && buyerOrganizationId.history}
           onClick={() => {
-            setsearchBoxType("carTypeId");
+            // setsearchBoxType("");
+            setdataSearchBoxType("buyerOrganizationId");
           }}
           readOnly={readOnly}
         />
-        {/* <AnimationSearchInput
-          width="100%"
-          height="40px"
-          placeholder="차종"
-          //   state={carTypeId && carTypeId.name}
-          onClick={() => {
-            setsearchBoxType("carTypeId");
-          }}
-          required
-          readOnly={readOnly}
-        /> */}
       </GridContainerStyle>
       <br />
       <div>
@@ -151,16 +186,16 @@ export default function ProjectInformationSection({
         />
         <Table width="100%" minHeight="120px">
           <TableIndexRow
-            widthArray={[3, 3, 4, 2]}
-            itemArray={["제품번호", "제품명", "제품군", "차종"]}
+            widthArray={[3, 3, 6]}
+            itemArray={["제품번호", "제품명", "제품군"]}
           />
           {[1] &&
             [1].map((item, i) => {
               return (
                 <TableRow
                   key={i}
-                  widthArray={[3, 3, 4, 2]}
-                  itemArray={["제품번호", "제품명", "제품군", "차종"]}
+                  widthArray={[3, 3, 6]}
+                  itemArray={["제품번호", "제품명", "제품군"]}
                 />
               );
             })}

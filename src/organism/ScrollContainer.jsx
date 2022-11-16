@@ -11,7 +11,7 @@ const ScrollContainerStyle = styled.div`
 `;
 const FormSectionStyle = styled.div`
   position: relative;
-  width: calc(55% - 120px);
+  width: calc(50% - 120px);
   height: calc(100vh - 230px); //여기 픽셀 수정
   overflow: scroll;
   padding-left: 60px;
@@ -33,13 +33,9 @@ const FormSectionStyle = styled.div`
   }
 `;
 const SearchBoxSectionStyle = styled.div`
-  width: 45%;
+  width: 50%;
   position: relative;
-  :nth-child(1) {
-    position: absolute;
-    left: 0;
-  }
-  :nth-child(2) {
+  :nth-child() {
     position: absolute;
     left: 0;
   }

@@ -89,65 +89,39 @@ export default function CategorizedTree({
               >
                 <span> {item2.name}</span>
                 {item2.last === 1 && (
-                  <span
-                    className="material-icons click"
-                    onClick={() => {
-                      setselectedClassArray([
-                        {
-                          value: item2.value,
-                          classification: item2.classification,
-                        },
-                      ]);
-                    }}
-                  >
-                    navigate_next
-                  </span>
+                  <span className="material-icons click">navigate_next</span>
                 )}
               </div>
             );
           });
       return (
-        <div
-          className="lv2BoxStyle"
-          key={i}
-          onClick={() => {
-            if (lv2Only) {
-              setselectedClassArray([
-                {
-                  value: item.value,
-                  classification: item.classification,
-                  tag: item.c3SelectDtos && item.c3SelectDtos[0],
-                },
-              ]);
-            }
-          }}
-        >
-          <div className="lv2Name">
+        <div className="lv2BoxStyle" key={i}>
+          <div
+            className="lv2Name"
+            onClick={() => {
+              if (!item.c3SelectDtos[0]) {
+                if (lv2Only) {
+                  setselectedClassArray([
+                    {
+                      value: item.value,
+                      classification: item.classification,
+                      tag: item.c3SelectDtos && item.c3SelectDtos[0],
+                    },
+                  ]);
+                } else {
+                  setselectedClassArray([
+                    {
+                      value: item.value,
+                      classification: item.classification,
+                    },
+                  ]);
+                }
+              }
+            }}
+          >
             <span>{item.name}</span>
             {item.last === 1 && (
-              <span
-                className="material-icons click"
-                onClick={() => {
-                  if (lv2Only) {
-                    setselectedClassArray([
-                      {
-                        value: item.value,
-                        classification: item.classification,
-                        tag: item.c3SelectDtos && item.c3SelectDtos[0],
-                      },
-                    ]);
-                  } else {
-                    setselectedClassArray([
-                      {
-                        value: item.value,
-                        classification: item.classification,
-                      },
-                    ]);
-                  }
-                }}
-              >
-                navigate_next
-              </span>
+              <span className="material-icons click">navigate_next</span>
             )}
           </div>
 

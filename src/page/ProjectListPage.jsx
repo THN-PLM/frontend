@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { PageStyle, ListPageStyle } from "../Style";
@@ -6,20 +6,23 @@ import TableIndexRow from "../atom/TableIndexRow";
 import TableRow from "../atom/TableRow";
 
 import PaginationTable from "../molecule/PaginationTable";
-import { usePageConditionList } from "../utility/Utility";
+import { tokenAxios, usePageConditionList } from "../utility/Utility";
 import SearchBar from "../molecule/SearchBar";
-import DropdownButton from "../molecule/DropdownButton";
+import DropdownButton from "../organism/DropdownButton";
+import OptionModal from "../molecule/OptionModal";
+import ProjectManageButton from "../molecule/ProjectManageButton";
 
 export default function ProjectListPage() {
   const navigate = useNavigate();
   const [pageCondition, setpageCondition, projectListData] =
-    usePageConditionList("", "searchText", "isManager");
-
+    usePageConditionList("project", "searchText", "isManager");
+  console.log(projectListData);
   const projectRowList =
     projectListData &&
-    projectListData.map((item) => {
+    projectListData.map((item, i) => {
       return (
         <TableRow
+          key={i}
           onClick={
             pageCondition.isManager
               ? () => {
@@ -37,8 +40,26 @@ export default function ProjectListPage() {
             "발주처",
             "Phase",
             "Status",
-            pageCondition.isManager && "삭제 여부",
-            pageCondition.isManager && "Drop 여부",
+            pageCondition.isManager && (
+              <ProjectManageButton
+                // disable={item.delete}
+                onClick={async () => {
+                  await tokenAxios.put(`/project-delete/${item.id}`);
+                }}
+              >
+                삭제
+              </ProjectManageButton>
+            ),
+            pageCondition.isManager && (
+              <ProjectManageButton
+                // disable={item.delete}
+                onClick={async () => {
+                  await tokenAxios.put(`/project-pending/${item.id}`);
+                }}
+              >
+                Drop
+              </ProjectManageButton>
+            ),
           ]}
           widthArray={
             pageCondition.isManager
@@ -63,9 +84,24 @@ export default function ProjectListPage() {
             }}
           />
           <div className="filter">
-            <DropdownButton title="Filters" width="80px" height="30px" right>
-              aaa
-            </DropdownButton>
+            <DropdownButton
+              buttonTitle="Filters"
+              width="80px"
+              height="30px"
+              right
+              title="Refine Results"
+              uiObject={{
+                "Project Manager": {
+                  "Show Every Project": false,
+                  "Managing Projects": true,
+                },
+              }}
+              setStateList={[
+                (val) => {
+                  setpageCondition("isManager", val);
+                },
+              ]}
+            />
           </div>
         </div>
         <PaginationTable
@@ -86,7 +122,7 @@ export default function ProjectListPage() {
         >
           <TableIndexRow
             itemArray={[
-              "#",
+              "Number",
               "Project Name",
               "개발 유형",
               "계획시작일",
@@ -105,7 +141,7 @@ export default function ProjectListPage() {
             }
             width="100%"
           />
-          {/* {projectRowList} */}
+          {projectRowList}
         </PaginationTable>
       </ListPageStyle>
     </PageStyle>

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import SelectBox from "../atom/SelectBox";
 import TableIndexRow from "../atom/TableIndexRow";
 import TableRow from "../atom/TableRow";
-import commonStore from "../store/commonStore";
 import CategorizedTree from "../molecule/CategorizedTree";
 import SearchBar from "../molecule/SearchBar";
 import Table from "../molecule/Table";
+import { tokenAxios } from "../utility/Utility";
 
 const DataSearchBoxStyle = styled.div`
   width: calc(${(props) => props.width});
@@ -23,8 +22,7 @@ const DataSearchBoxStyle = styled.div`
     width: 100%;
   }
 `;
-function DataSearchBox({ width, height, setstate, activate, document, type }) {
-  const tokenAxios = commonStore((state) => state.tokenAxios);
+function DataSearchBox({ width, height, setstate, document, type }) {
   const [classification, setclassification] = useState([]);
   const [selectedClassArray, setselectedClassArray] = useState([]);
   const [searchText, setsearchText] = useState("");
@@ -111,7 +109,7 @@ function DataSearchBox({ width, height, setstate, activate, document, type }) {
     }
   }, [searchText]);
   return (
-    <DataSearchBoxStyle width={width} height={height} activate={activate}>
+    <DataSearchBoxStyle width={width} height={height} activate={type}>
       <div className="left">{itemCategoryList}</div>
       <div className="right">
         <div className="searchPart">

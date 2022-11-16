@@ -24,7 +24,7 @@ const AnimationSearchInputStyle = styled.div`
   background-color: ${(props) =>
     props.backgroundColor ? props.backgroundColor : "white"};
   border-radius: 10px;
-  border: ${(props) => (props.requiredError ? "solid red 1px" : ``)};
+  border: ${(props) => (props.isNow ? "solid var(--eciBlue) 2px" : ``)};
 
   font-size: calc((${(props) => props.height}) / 3);
   font-family: "Roboto";
@@ -145,6 +145,7 @@ export default function AnimationSearchInput({
   required,
   backgroundColor,
   borderBottom,
+  isNow,
 }) {
   return (
     <AnimationSearchInputContainerStyle
@@ -158,6 +159,7 @@ export default function AnimationSearchInput({
         required={required}
         readOnly={readOnly}
         backgroundColor={backgroundColor}
+        isNow={isNow}
       >
         <div className="placeholder">
           {placeholder}

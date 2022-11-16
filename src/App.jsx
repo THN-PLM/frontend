@@ -33,8 +33,8 @@ const AppStyle = styled.div`
 `;
 function App() {
   const [isHover, setisHover] = useState(false);
-  // const { isLogged } = commonStore();
-  const isLogged = true;
+  const { isLogged } = commonStore();
+  // const isLogged = true;
   return (
     <div className="App">
       {!isLogged ? (

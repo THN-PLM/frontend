@@ -8,14 +8,14 @@ import Button from "../atom/Button";
 import RouteInitSection from "../organism/RouteInitSection";
 import SearchBox from "../organism/SearchBox";
 import DataSearchBox from "../organism/DataSearchBox";
-import { useappendProjectForm, useSave } from "../utility/Utility";
+import { appendProjectForm, useSave } from "../utility/Utility";
 
 export default function ProjectAddPage() {
   // 페이지 상태 관리
   const {
     isRouteActive,
     // searchBox
-    DataSearchBoxType,
+    dataSearchBoxType,
     setDataSearchBoxProperty,
     searchBoxType,
     setsearchBoxProperty,
@@ -30,26 +30,45 @@ export default function ProjectAddPage() {
     settargetMember,
     members,
     setsearchBoxType,
+    initProjectModule,
+    getisConditionFullfill,
   } = projectStore();
-
+  const searchBoxComponentArray = [
+    // <SearchBox
+    //   key={0}
+    //   width="100%"
+    //   height="100vh - 218px"
+    //   type={searchBoxType}
+    //   setproperty={setsearchBoxProperty}
+    //   propertyIndex={targetMember}
+    //   members={members}
+    //   deletememberArray={deletemember}
+    // />,
+    <DataSearchBox
+      key={1}
+      width="100%"
+      setstate={(val) => setDataSearchBoxProperty(dataSearchBoxType, val)}
+      type={dataSearchBoxType}
+    />,
+  ];
   const projectstore = projectStore();
   const saveProject = useSave(
     "project",
-    useappendProjectForm,
+    appendProjectForm,
     projectstore
     // temp,
     // edit,
   );
   const saveTempProject = useSave(
     "project",
-    useappendProjectForm,
+    appendProjectForm,
     projectstore,
     true
-    // edit,
+    // edit
   );
   // 페이지 탈출시 init
   useEffect(() => {
-    // init
+    initProjectModule();
   }, []);
   return (
     <PageStyle>
@@ -59,25 +78,7 @@ export default function ProjectAddPage() {
           [attachmentRef, "Project Attachment"],
           [routeRef, "Route Information"],
         ]}
-        searchBoxComponent={[
-          <SearchBox
-            key={0}
-            width="100%"
-            height="100vh - 218px"
-            type={searchBoxType}
-            setproperty={setsearchBoxProperty}
-            propertyIndex={targetMember}
-            members={members}
-            deletememberArray={deletemember}
-          />,
-          <DataSearchBox
-            key={1}
-            width="100%"
-            activate={DataSearchBoxType}
-            setstate={(val) => setDataSearchBoxProperty(DataSearchBoxType, val)}
-            type={DataSearchBoxType}
-          />,
-        ]}
+        searchBoxComponent={searchBoxComponentArray}
         tempButtonTitle="Save as Draft"
         tempButtonOnclick={saveTempProject}
       >
@@ -95,7 +96,7 @@ export default function ProjectAddPage() {
             height="30px"
             color="white"
             onClick={saveProject}
-            condition={!!true}
+            condition={getisConditionFullfill}
           >
             Save and Route
           </Button>

@@ -25,8 +25,8 @@ export default function TableIndexRow({
   noBorder,
   backgroundColor,
 }) {
-  const row = itemArray.map((item) => (
-    <BoldText key={item} fontSize="10px" color="var(--eciBlue)" width={width}>
+  const row = itemArray.map((item, i) => (
+    <BoldText key={i} fontSize="10px" color="var(--eciBlue)" width={width}>
       {item}
     </BoldText>
   ));

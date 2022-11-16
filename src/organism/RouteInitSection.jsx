@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Button from "../atom/Button";
 import LineTitle from "../atom/LineTitle";
 import RouteCommentRow from "../molecule/RouteCommentRow";
-import commonStore, { userStore } from "../store/commonStore";
+import { userStore } from "../store/commonStore";
+import { tokenAxios } from "../utility/Utility";
 
 const RouteInitSectionStyle = styled.div`
   position: relative;
@@ -27,7 +28,6 @@ export default function RouteInitSection({
   members,
   url,
 }) {
-  const tokenAxios = commonStore((state) => state.tokenAxios);
   const { userData } = userStore();
   const [newComment, setnewComment] = useState("");
   const routeRef = useRef();
@@ -115,32 +115,6 @@ export default function RouteInitSection({
       );
       setisLoading(false);
       alert("라우트 등록이 완료되었습니다");
-
-      switch (itemType) {
-        case "CO": {
-          navigate(`/C/O`);
-          break;
-        }
-        case "CR": {
-          navigate(`/C/R`);
-          break;
-        }
-        case "release": {
-          navigate(`/release`);
-          break;
-        }
-        case "document": {
-          navigate(`/document`);
-          break;
-        }
-        case "project": {
-          navigate(`/project/detail/${itemId}`);
-          break;
-        }
-        default: {
-          navigate(`/item/detail/${itemId}`);
-        }
-      }
     } catch (error) {
       if (error.response.data.result) {
         console.log(error.response);
