@@ -9,12 +9,12 @@ import { tokenAxios } from "../utility/Utility";
 
 const RouteInitSectionStyle = styled.div`
   position: relative;
+  display: ${(props) => (props.activate ? "" : "none")};
 `;
 const RouteContainerStyle = styled.div`
   width: 100%;
   min-height: 800px;
   margin-top: 20px;
-  display: ${(props) => (props.activate ? "" : "none")};
 `;
 
 export default function RouteInitSection({
@@ -23,6 +23,7 @@ export default function RouteInitSection({
   typeId,
   activate,
   moduleStore,
+  afterUrl,
 }) {
   const {
     setrouteRef,
@@ -30,7 +31,6 @@ export default function RouteInitSection({
     targetMember,
     settargetMember,
     members,
-    afterUrl,
   } = moduleStore;
   const { userData } = userStore();
   const [newComment, setnewComment] = useState("");
@@ -118,7 +118,7 @@ export default function RouteInitSection({
   const getRouteByItem = async (itemIdd) => {
     //  여기 수정해야해
 
-    if (itemIdd > 0) {
+    if (itemIdd > 0 && activate) {
       const response = await tokenAxios.get(`routeBy${routeType}/${itemIdd}`);
       setrouteData(response.data.result.data);
     }

@@ -17,7 +17,7 @@ const RouteContainerStyle = styled.div`
 export default function RouteSection({
   activate, //  isRouteActive
   readOnly,
-  rejecting,
+  rejecting, // rejecting이 on이면 모든 라우트 카드들이 검은색으로, readonly상태로 제시됨
   moduleStore, // 해당 모듈의 스토어 객체
 }) {
   const { setrouteRef, routeData, routeNumber, setrouteData } = moduleStore;
@@ -100,7 +100,7 @@ export default function RouteSection({
 
   useEffect(() => {
     setrouteRef(routeRef);
-    if (routeNumber && routeNumber > 0) {
+    if (routeNumber && routeNumber > 0 && activate) {
       getData(routeNumber);
     }
   }, [setrouteRef, getData, routeNumber]);

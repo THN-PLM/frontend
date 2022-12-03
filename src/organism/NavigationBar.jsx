@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import NavBarCategoryBox from "../molecule/NavBarCategoryBox";
 
-import { userStore } from "../store/commonStore";
 import NavBarLogoBox from "../molecule/NavBarLogoBox";
 import NavBarBackground from "../molecule/NavBarBackground";
 import NavBarUserBox from "../molecule/NavBarUserBox";
@@ -27,7 +26,6 @@ const NavigationBarStyle = styled.div`
 `;
 
 export default function NavigationBar({ isHover, setisHover }) {
-  const { userData } = userStore();
   const moduleArray = ["", "project"]; // 모듈 추가시 여기 수정
   const [currentModuleNum, setcurrentModuleNum] = useState(
     moduleArray.indexOf(window.location.pathname.split("/")[1])
@@ -72,7 +70,7 @@ export default function NavigationBar({ isHover, setisHover }) {
       )} */}
 
       <NavBarBackground currentModuleNum={currentModuleNum} isHover={isHover} />
-      <NavBarUserBox />
+      <NavBarUserBox isHover={isHover} />
     </NavigationBarStyle>
   );
 }

@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import LineTitle from "../atom/LineTitle";
-import {
-  GridContainerStyle,
-  PageStyle,
-  TempButtonContainerStyle,
-} from "../Style";
+import { GridContainerStyle, PageStyle } from "../Style";
 import AnimationInput from "../molecule/AnimationInput";
 import AnimationSearchInput from "../molecule/AnimationSearchInput";
 import AnimationSelectBox from "../molecule/AnimationSelectBox";
@@ -14,8 +10,7 @@ import Table from "../molecule/Table";
 import TableIndexRow from "../atom/TableIndexRow";
 import TableRow from "../atom/TableRow";
 import ModalBox from "./ModalBox";
-import Button from "../atom/Button";
-import DataSearchBox from "./DataSearchBox";
+
 import Input from "../atom/Input";
 
 export default function ProjectInformationSection({

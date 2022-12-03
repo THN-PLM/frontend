@@ -207,7 +207,6 @@ const appendAttachmentFormData = (formData, edit, moduleStore) => {
     deletedAttachmentArray,
     addedAttachmentArray,
   } = moduleStore;
-  console.log(edit);
   if (edit) {
     // edit attachment
     addedAttachmentArray.forEach((file) => {
@@ -227,12 +226,13 @@ const appendAttachmentFormData = (formData, edit, moduleStore) => {
         formData.append("attachments", file);
       }
     });
-
-    formData.append("attachmentComment", attachmentCommentArray);
-    formData.append(
-      "tag",
-      attachmentTagArray.map((item) => (item.id ? item.id : item))
-    );
+    if (attachmentFileArray || addedAttachmentArray) {
+      formData.append("attachmentComment", attachmentCommentArray);
+      formData.append(
+        "tag",
+        attachmentTagArray.map((item) => (item.id ? item.id : item))
+      );
+    }
   }
 };
 // save원형
@@ -357,7 +357,7 @@ export const appendProjectForm = (edit, projectStore) => {
   return formData;
 };
 
-export const usegetProjectData = (id, projectStore) => {
+export const usegetProjectData = (id, projectStore, callBack) => {
   return async () => {
     const response = await tokenAxios.get(`/project/${id}`);
     const { data } = response.data.result;
@@ -381,6 +381,7 @@ export const usegetProjectData = (id, projectStore) => {
       setbuyerOrganization,
       setproduceOrganization,
       setrouteNumber,
+      setisRouteActivate,
     } = projectStore;
     // setstate
     setid(data.id);
@@ -404,5 +405,9 @@ export const usegetProjectData = (id, projectStore) => {
 
     setAttachmentArrays(data.projectAttachmentList, projectStore);
     setrouteNumber(data.routeId);
+    if (callBack) {
+      //  isRouteActivate, isReject...등등은 콜백으로 관리
+      callBack(data);
+    }
   };
 };

@@ -111,7 +111,6 @@ const projectStore = create((set, get) => ({
       buyerOrganization: "",
       produceOrganization: "",
       //  default
-      isRouteActive: false,
       isLoading: false,
       tempId: "",
       routeId: "",
@@ -153,6 +152,7 @@ const projectStore = create((set, get) => ({
   getisConditionFullfill: () => {
     let condition = true;
     const { type, productId } = get();
+    console.log(type, productId);
     condition = !!type && !!productId;
     return condition;
   },

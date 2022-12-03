@@ -15,6 +15,7 @@ import {
   usegetProjectData,
   useSave,
 } from "../utility/Utility";
+import RouteSection from "../organism/RouteSection";
 
 export default function ProjectEditPage() {
   // 페이지 상태 관리
@@ -32,6 +33,7 @@ export default function ProjectEditPage() {
   const {
     // route
     isRouteActive,
+    setisRouteActivate,
     id,
     type,
     // searchBox
@@ -49,6 +51,8 @@ export default function ProjectEditPage() {
   } = projectStore();
   const projectstore = projectStore();
   const params = useParams();
+  const [isRouteInit, setisRouteInit] = useState(true);
+  const [isRejecting, setisRejecting] = useState(false);
   const saveProject = useSave("project", appendProjectForm, projectstore, true);
   const saveTempProject = useSave(
     "project",
@@ -57,7 +61,22 @@ export default function ProjectEditPage() {
     // true
   );
 
-  const getprojectData = usegetProjectData(params.projectId, projectstore);
+  const getprojectData = usegetProjectData(
+    params.projectId,
+    projectstore,
+    (data) => {
+      // setisRouteActivate(data.te);
+      // setisRouteInit(data);
+      //  setisRejecting()
+    }
+  );
+  //   isRouteActivate settings.
+  //  temp save -> isRoute false , route init
+  //  rejected - first => isRoute false , route init ?
+  //  save and quit ->isRoute true , route init
+  //  flow from list -> isRoute false , route init ?
+  //  review -> isROute true , route
+  //  rejected - after -> isRoute false , route
   useEffect(() => {
     getprojectData();
     return () => {
@@ -115,13 +134,23 @@ export default function ProjectEditPage() {
           </Button>
         )}
         <br />
-        <RouteInitSection
-          activate={isRouteActive}
-          routeType="Proj"
-          itemId={id}
-          typeId={type}
-          moduleStore={projectstore}
-        />
+        {isRouteInit ? (
+          <RouteInitSection
+            activate={isRouteActive}
+            routeType="Proj"
+            itemId={id}
+            typeId={type}
+            moduleStore={projectstore}
+            afterUrl="/project/list"
+          />
+        ) : (
+          <RouteSection
+            activate={isRouteActive}
+            readOnly={!isRouteActive}
+            moduleStore={projectstore}
+            rejecting={isRejecting}
+          />
+        )}
       </ScrollContainer>
     </PageStyle>
   );
