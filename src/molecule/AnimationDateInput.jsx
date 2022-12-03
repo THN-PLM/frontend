@@ -8,7 +8,7 @@ const AnimationDateInputContainerStyle = styled.div`
   .fillIn {
     height: 15px;
     margin-top: 2px;
-    font-size: 10px;
+    font-size: 8px;
     color: red;
     margin-left: 10px;
   }
@@ -25,7 +25,6 @@ const AnimationDateInputStyle = styled.div`
   background-color: ${(props) =>
     props.backgroundColor ? props.backgroundColor : "white"};
   pointer-events: ${(props) => (props.readOnly ? "none" : "")};
-  border: ${(props) => (props.requiredError ? "solid red 1px" : "")};
 
   .placeholder {
     pointer-events: none;
@@ -56,7 +55,7 @@ const AnimationDateInputStyle = styled.div`
       font-size: 12px;
       font-weight: 700;
       color: var(--eciBlue);
-      opacity: ${(props) => (props.requiredError ? "0" : "1")};
+      opacity: ${(props) => (props.error ? "0" : "1")};
     }
   }
   input {
@@ -102,6 +101,7 @@ const AnimationDateInputStyle = styled.div`
             }
           }
         `}
+  border: ${(props) => (props.error ? "solid red 1px" : "")};
 `;
 
 export default function AnimationDateInput({
@@ -111,8 +111,8 @@ export default function AnimationDateInput({
   backgroundColor,
   state,
   setState,
-  name,
-  requiredError,
+  error,
+  errorMessage,
   readOnly,
 }) {
   const handleChange = (e) => {
@@ -122,7 +122,6 @@ export default function AnimationDateInput({
       setState(e.target.value);
     }
   };
-
   return (
     <AnimationDateInputContainerStyle width={width} height={`${height} + 20px`}>
       <AnimationDateInputStyle
@@ -130,7 +129,7 @@ export default function AnimationDateInput({
         height={height}
         state={state}
         readOnly={readOnly}
-        requiredError={requiredError}
+        error={error}
         backgroundColor={backgroundColor}
       >
         <div className="placeholder">{placeholder}</div>
@@ -148,7 +147,7 @@ export default function AnimationDateInput({
           value={state}
         /> */}
       </AnimationDateInputStyle>
-      {requiredError && !state ? <div className="fillIn">fill in</div> : ""}
+      {error && <div className="fillIn">{errorMessage}</div>}
     </AnimationDateInputContainerStyle>
   );
 }

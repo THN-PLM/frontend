@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
+import OptionModal from "../molecule/OptionModal";
 
 const DropDownButtonStyle = styled.div`
   position: relative;
@@ -34,6 +35,9 @@ const DropDownButtonStyle = styled.div`
           `}
     top: calc(${(props) => props.height} + 4px);
   }
+  .icon {
+    font-size: 10px;
+  }
 `;
 export default function DropdownButton({
   title,
@@ -43,8 +47,22 @@ export default function DropdownButton({
   backgroundColor,
   toggleColor,
   right,
+  uiObject,
+  setStateList,
+  buttonTitle,
 }) {
   const [isToggle, setisToggle] = useState(false);
+  const modalRef = useRef();
+  const handleClickOutside = ({ target }) => {
+    if (!modalRef.current.contains(target)) setisToggle(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
     <DropDownButtonStyle
       width={width}
@@ -53,6 +71,7 @@ export default function DropdownButton({
       isToggle={isToggle}
       toggleColor={toggleColor}
       right={right}
+      ref={modalRef}
     >
       <div
         className="button"
@@ -60,9 +79,21 @@ export default function DropdownButton({
           setisToggle(!isToggle);
         }}
       >
-        {title}
+        <span className="material-icons icon">filter_alt</span>
+
+        {buttonTitle}
       </div>
-      {isToggle && <div className="box">{children}</div>}
+      {isToggle && (
+        <div className="box">
+          <OptionModal
+            width="200px"
+            title={title}
+            uiObject={uiObject}
+            setisModal={setisToggle}
+            setStateList={setStateList}
+          />
+        </div>
+      )}
     </DropDownButtonStyle>
   );
 }

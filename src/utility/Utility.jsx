@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+//  모듈별 스토어 모음
 
 export const tokenAxios = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -115,6 +116,11 @@ export const useUpdateObjState = (object) => {
 };
 
 export const usePageConditionList = (url, ...more) => {
+  //  url과 다른 조건들을 받아서
+  //  다른 조건 : 기본 조건은 페이지 넘버, rowsperpage, totalpage.
+  //  여기에 추가할 조건들을 넣는 형태
+  // 다른 조건들은 searchText, isManager이 있음
+  //  조건 객체, 조건 객체 변경 함수, 결과 리스트 값을 반환
   const [resultData, setresultData] = useState([]);
   const initObj = {
     pageNum: "0",
@@ -126,22 +132,282 @@ export const usePageConditionList = (url, ...more) => {
       initObj[item] = "";
     });
   }
-
   const [conditionObject, setconditionObject] = useState(initObj);
   const changeCondition = (key, value) => {
     const tmpObj = { ...conditionObject };
     tmpObj[key] = value;
     setconditionObject(tmpObj);
   };
+
   const getData = async () => {
     const response = await tokenAxios.get(
-      `${url}&page=${conditionObject.pageNum}` // page,name이랑뒤에거추가하기
+      `${url}${conditionObject.isManager ? "/management" : "/page"}?size=${
+        conditionObject.rowsPerPage
+      }&page=${conditionObject.pageNum}&name=${conditionObject.searchText}` // page,name이랑뒤에거추가하기
     );
-    setresultData(response.data);
+    setresultData(response.data.content);
     // totalPage설정
   };
   useEffect(() => {
-    // getData();
+    getData();
   }, [conditionObject]);
   return [conditionObject, changeCondition, resultData];
+};
+
+// getData원형
+const setAttachmentArrays = (attachmentsArray, moduleStore) => {
+  const {
+    setattachmentFileArray,
+    setattachmentIdArray,
+    setattachmentCommentArray,
+    setattachmentTagArray,
+    setattachmentOriginArray,
+    setattachmentDateArray,
+    setattachmentUploaderArray,
+    setdeletedFileIdArray,
+    setattachmentModifiedAtArray,
+  } = moduleStore;
+  const tempfileArray = [];
+  const temptagArray = [];
+  const tempcommentArray = [];
+  const temporiginArray = [];
+  const tempuploaderArray = [];
+  const tempdateArray = [];
+  const tempidArray = [];
+  const tempdeletedFileArray = [];
+  const tempModifiedAtArray = [];
+  attachmentsArray.forEach((item) => {
+    tempfileArray.push(item.originName);
+    tempcommentArray.push(item.attach_comment);
+    temptagArray.push(item.tag);
+    temporiginArray.push(item.attachmentaddress);
+    tempuploaderArray.push(item.upload);
+    tempdateArray.push(item.date);
+    tempidArray.push(item.id);
+    if (item.deleted) {
+      tempdeletedFileArray.push(item.id);
+    }
+    tempModifiedAtArray.push(item.modifiedAt ? item.modifiedAt : "");
+  });
+  setattachmentFileArray(tempfileArray);
+  setattachmentIdArray(tempidArray);
+  setattachmentCommentArray(tempcommentArray);
+  setattachmentTagArray(temptagArray);
+  setattachmentOriginArray(temporiginArray);
+  setattachmentDateArray(tempdateArray);
+  setattachmentUploaderArray(tempuploaderArray);
+  setdeletedFileIdArray(tempdeletedFileArray);
+  setattachmentModifiedAtArray(tempModifiedAtArray);
+};
+const appendAttachmentFormData = (formData, edit, moduleStore) => {
+  const {
+    attachmentFileArray,
+    attachmentCommentArray,
+    attachmentTagArray,
+    deletedAttachmentArray,
+    addedAttachmentArray,
+  } = moduleStore;
+  if (edit) {
+    // edit attachment
+    addedAttachmentArray.forEach((file) => {
+      formData.append("addedAttachments", file);
+    });
+
+    formData.append("addedAttachmentComment", attachmentCommentArray);
+    formData.append(
+      "addedTag",
+      attachmentTagArray.map((item) => (item.id ? item.id : item))
+    );
+    formData.append("deletedAttachments", deletedAttachmentArray);
+  } else {
+    // attachment
+    attachmentFileArray.forEach((file) => {
+      if (typeof file !== "string") {
+        formData.append("attachments", file);
+      }
+    });
+    if (attachmentFileArray || addedAttachmentArray) {
+      formData.append("attachmentComment", attachmentCommentArray);
+      formData.append(
+        "tag",
+        attachmentTagArray.map((item) => (item.id ? item.id : item))
+      );
+    }
+  }
+};
+// save원형
+export const useSave = (url, appendFormData, moduleStore, edit) => {
+  // url, formData추가 함수(appendFormData), store객체, edit여부를 받아서
+  //  save명령을 보내는 save함수를 반환
+  const {
+    id,
+    setid,
+    setrouteId,
+    tempId,
+    settempId,
+    setisLoading,
+    setisRouteActive,
+  } = moduleStore;
+
+  //  각 store에 해당 속성들 꼭 있도록 확인
+  const save = async () => {
+    setisLoading(true);
+    const formData = appendFormData(edit, moduleStore);
+    try {
+      let response = "";
+      if (edit) {
+        response = await tokenAxios.put(`/${url}/temp/end/${tempId}`, formData);
+      } else {
+        response = await tokenAxios.post(`/${url}`, formData);
+      }
+      setisRouteActive(true);
+      // setrouteNumber(response.data.result.data.routeId);
+      // setrouteId(response.data.result.data.id);
+      setid(response.data.result.data.id);
+      alert("Done!");
+      setisLoading(false);
+    } catch (err) {
+      setisRouteActive(false);
+    }
+  };
+  return save;
+};
+export const usetempSave = (url, appendFormData, moduleStore) => {
+  // url, formData추가 함수(appendFormData), store객체, temp여부, edit여부를 받아서
+  //  save명령을 보내는 save함수를 반환
+  const { tempId, settempId, setisLoading, setisRouteActive } = moduleStore;
+
+  //  각 store에 해당 속성들 꼭 있도록 확인
+  const save = async () => {
+    setisLoading(true);
+    const formData = appendFormData(false, moduleStore);
+    try {
+      if (tempId) {
+        const response = await tokenAxios.put(
+          `/${url}/temp/${tempId}`,
+          formData
+        );
+      } else {
+        const response = await tokenAxios.post(`/${url}/temp`, formData);
+        settempId(response.data.result.data.id);
+      }
+      alert("Done!");
+      setisLoading(false);
+    } catch (err) {
+      setisRouteActive(false);
+    }
+  };
+  return save;
+};
+
+// export const appendForm = (edit, projectStore) => {
+//   const formData = new FormData();
+
+//   appendAttachmentFormData(formData, edit, projectStore);
+//   return formData;
+// };
+
+// project
+
+export const appendProjectForm = (edit, projectStore) => {
+  const {
+    type,
+    period,
+    name,
+    allDoStartPeriod,
+    allDoOverPeriod,
+    protoStartPeriod,
+    protoOverPeriod,
+    p1StartPeriod,
+    p1OverPeriod,
+    p2StartPeriod,
+    p2OverPeriod,
+    mStartPeriod,
+    mOverPeriod,
+    productId,
+    buyerOrganization,
+    produceOrganization,
+    carTypeId,
+  } = projectStore;
+  //  추가하는 어태치는 키값도 빼버리기
+  const formData = new FormData();
+  formData.append("projectTypeId", type);
+  formData.append("name", name);
+  formData.append("allDoStartPeriod", allDoStartPeriod);
+  formData.append("allDoOverPeriod", allDoOverPeriod);
+  formData.append("protoStartPeriod", protoStartPeriod);
+  formData.append("protoOverPeriod", protoOverPeriod);
+  formData.append("p1StartPeriod", p1StartPeriod);
+  formData.append("p1OverPeriod", p1OverPeriod);
+  formData.append("p2StartPeriod", p2StartPeriod);
+  formData.append("p2OverPeriod", p2OverPeriod);
+  formData.append("mStartPeriod", mStartPeriod);
+  formData.append("mOverPeriod", mOverPeriod);
+  formData.append("productId", 5);
+  formData.append(
+    "buyerOrganizationId",
+    buyerOrganization && buyerOrganization.id
+  );
+  formData.append(
+    "produceOrganizationId",
+    produceOrganization && produceOrganization.id
+  );
+  formData.append("carTypeId", 1);
+  appendAttachmentFormData(formData, edit, projectStore);
+  return formData;
+};
+
+export const usegetProjectData = (id, projectStore, callBack) => {
+  return async () => {
+    const response = await tokenAxios.get(`/project/${id}`);
+    const { data } = response.data.result;
+    const {
+      setid,
+      settype,
+      setperiod,
+      setnumber,
+      setname,
+      setallDoStartPeriod,
+      setallDoOverPeriod,
+      setprotoStartPeriod,
+      setprotoOverPeriod,
+      setp1StartPeriod,
+      setp1OverPeriod,
+      setp2StartPeriod,
+      setp2OverPeriod,
+      setmStartPeriod,
+      setmOverPeriod,
+      setproductId,
+      setbuyerOrganization,
+      setproduceOrganization,
+      setrouteNumber,
+      setisRouteActivate,
+    } = projectStore;
+    // setstate
+    setid(data.id);
+    settype(data.type);
+    setperiod(data.period);
+    setnumber(data.number);
+    setname(data.name);
+    setallDoStartPeriod(data.allDoStartPeriod);
+    setallDoOverPeriod(data.allDoOverPeriod);
+    setprotoStartPeriod(data.protoStartPeriod);
+    setprotoOverPeriod(data.protoOverPeriod);
+    setp1StartPeriod(data.p1StartPeriod);
+    setp1OverPeriod(data.p1OverPeriod);
+    setp2StartPeriod(data.p1StartPeriod);
+    setp2OverPeriod(data.p1OverPeriod);
+    setmStartPeriod(data.mStartPeriod);
+    setmOverPeriod(data.mOverPeriod);
+    setproductId(data.productId);
+    setbuyerOrganization(data.buyer);
+    setproduceOrganization(data.produceOrganization);
+
+    setAttachmentArrays(data.projectAttachmentList, projectStore);
+    setrouteNumber(data.routeId);
+    if (callBack) {
+      //  isRouteActivate, isReject...등등은 콜백으로 관리
+      callBack(data);
+    }
+  };
 };

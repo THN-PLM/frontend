@@ -59,6 +59,7 @@ export default function Input({
   type,
   fontSize,
   late,
+  readOnly,
 }) {
   let timer;
   const inputRef = useRef();
@@ -91,13 +92,14 @@ export default function Input({
     <InputStyle
       width={width}
       height={height}
+      fontSize={fontSize}
+      color={color}
       placeholder={placeholder}
       onChange={handleText}
       name={name}
-      color={color}
       ref={inputRef}
       type={type}
-      fontSize={fontSize}
+      readOnly={readOnly}
     />
   );
 }

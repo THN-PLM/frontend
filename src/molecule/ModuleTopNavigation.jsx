@@ -38,7 +38,7 @@ export default function ModuleTopNavigation({ title, navList }) {
           lineHeight: "40px",
           fontSize: "14px",
           fontWeight: "600",
-          paddingRight: "100px",
+          paddingRight: "120px",
           paddingLeft: "8px",
           borderBottom: isActive ? "solid 2px var(--eciBlue)" : "none",
           color: isActive ? "var(--eciBlue)" : "var(--textDarkGray)",

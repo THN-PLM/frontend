@@ -16,41 +16,71 @@ const AttachmentSectionStyle = styled.div`
   }
 `;
 export default function AttachmentSection({
-  setattachmentRef,
   title,
-  tagOptionList,
   oneLine,
   readOnly,
-
-  attachmentIdArray,
-  attachmentOriginArray,
-  attachmentDateArray,
-  attachmentUploaderArray,
-  attachmentModifiedAtArray,
-  setattachmentIdArray,
-
-  setattachmentOriginArray,
-  setattachmentDateArray,
-  setattachmentUploaderArray,
-  deletedFileIds, // [1,3,5] : deleted = true인 애들 id값,history용
-
-  // edit
-  attachmentFileArray,
-  attachmentTagArray,
-  attachmentCommentArray,
-  setattachmentFileArray,
-  setattachmentTagArray,
-  setattachmentCommentArray,
-
+  moduleStore,
   editMode,
-  deletedAttachmentArray, // 밖에다가 전달할 애
-  addedAttachmentArray,
-  setdeletedAttachmentArray,
-  setaddedAttachmentArray,
+
+  // setattachmentRef,
+  // attachmentTagOptionList,
+  // attachmentIdArray,
+  // attachmentOriginArray,
+  // attachmentDateArray,
+  // attachmentUploaderArray,
+  // attachmentModifiedAtArray,
+  // setattachmentIdArray,
+
+  // setattachmentOriginArray,
+  // setattachmentDateArray,
+  // setattachmentUploaderArray,
+  // deletedFileIdArray, // [1,3,5] : deleted = true인 애들 id값,history용
+
+  // // edit
+  // attachmentFileArray,
+  // attachmentTagArray,
+  // attachmentCommentArray,
+  // setattachmentFileArray,
+  // setattachmentTagArray,
+  // setattachmentCommentArray,
+
+  // deletedAttachmentArray, // 밖에다가 전달할 애
+  // addedAttachmentArray,
+  // setdeletedAttachmentArray,
+  // setaddedAttachmentArray,
 }) {
   const attachmentRef = useRef();
   const [isHistory, setisHistory] = useState(false);
 
+  const {
+    setattachmentRef,
+    attachmentTagOptionList,
+
+    attachmentIdArray,
+    attachmentOriginArray,
+    attachmentDateArray,
+    attachmentUploaderArray,
+    attachmentModifiedAtArray,
+    setattachmentIdArray,
+
+    setattachmentOriginArray,
+    setattachmentDateArray,
+    setattachmentUploaderArray,
+    deletedFileIdArray, // [1,3,5] : deleted = true인 애들 id값,history용
+
+    // edit
+    attachmentFileArray,
+    attachmentTagArray,
+    attachmentCommentArray,
+    setattachmentFileArray,
+    setattachmentTagArray,
+    setattachmentCommentArray,
+
+    deletedAttachmentArray, // 밖에다가 전달할 애
+    addedAttachmentArray,
+    setdeletedAttachmentArray,
+    setaddedAttachmentArray,
+  } = moduleStore();
   const [fileArray, setfileArray] = useState(attachmentFileArray);
   const [tagArray, settagArray] = useState(attachmentTagArray);
   const [commentArray, setcommentArray] = useState(attachmentCommentArray);
@@ -74,8 +104,8 @@ export default function AttachmentSection({
       const tmpidArray = [];
       for (let i = 0; i < attachmentFileArray.length; i += 1) {
         if (
-          deletedFileIds &&
-          deletedFileIds.indexOf(attachmentIdArray[i]) === -1
+          deletedFileIdArray &&
+          deletedFileIdArray.indexOf(attachmentIdArray[i]) === -1
         ) {
           tmpfileArray.push(attachmentFileArray && attachmentFileArray[i]);
           tmptagArray.push(attachmentTagArray && attachmentTagArray[i]);
@@ -121,10 +151,7 @@ export default function AttachmentSection({
     attachmentFileArray,
     attachmentTagArray,
     attachmentCommentArray,
-    // attachmentOriginArray,
-    // attachmentDateArray,
-    // attachmentUploaderArray,
-    attachmentModifiedAtArray,
+
     isHistory,
   ]);
   return (
@@ -168,9 +195,9 @@ export default function AttachmentSection({
         setdateArray={setattachmentDateArray}
         setuploaderArray={setattachmentUploaderArray}
         readOnly={readOnly}
-        tagOptionList={tagOptionList}
+        tagOptionList={attachmentTagOptionList}
         editMode={editMode}
-        isDeletedArray={deletedFileIds} // [1,3,5] : deleted = true인 애들 id값
+        isDeletedArray={deletedFileIdArray} // [1,3,5] : deleted = true인 애들 id값
         setidArray={setattachmentIdArray}
         deletedArray={deletedAttachmentArray}
         setdeletedArray={setdeletedAttachmentArray}

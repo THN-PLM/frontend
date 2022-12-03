@@ -6,11 +6,7 @@ const ButtonStyle = styled.button`
   height: calc(${(props) => props.height});
 
   background-color: ${(props) =>
-    props.condition
-      ? props.backgroundColor
-      : props.disableColor
-      ? props.disableColor
-      : "var(--disableGray"};
+    props.condition ? props.backgroundColor : "var(--disableGray)"};
   border: ${(props) =>
     props.borderColor ? `${props.borderColor} solid 1px` : "none"};
   border-radius: ${(props) =>
