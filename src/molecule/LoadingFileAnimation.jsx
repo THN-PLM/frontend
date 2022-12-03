@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import folder from "../static/Folder.svg";
+// import folder from "../static/Folder.svg";
 
 const LoadingFileAnimationStyle = styled.div`
   margin: 20px auto;
@@ -47,7 +47,7 @@ const LoadingFileAnimationStyle = styled.div`
 export default function LoadingFileAnimation() {
   return (
     <LoadingFileAnimationStyle>
-      <img src={folder} alt="d" />
+      {/* <img src={folder} alt="d" /> */}
       <div className="container">
         <div className="wave" />
       </div>

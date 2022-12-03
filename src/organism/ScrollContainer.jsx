@@ -15,7 +15,7 @@ const FormSectionStyle = styled.div`
   height: calc(100vh - 230px); //여기 픽셀 수정
   overflow: scroll;
   padding-left: 60px;
-  padding-right: 1.5%;
+  padding-right: 30px;
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -33,7 +33,7 @@ const FormSectionStyle = styled.div`
   }
 `;
 const SearchBoxSectionStyle = styled.div`
-  width: 50%;
+  width: 46%;
   position: relative;
   :nth-child() {
     position: absolute;
@@ -57,18 +57,17 @@ export default function ScrollContainer({
         scrollRef={formRef}
       />
       <TempButtonContainerStyle>
-        {/* {tempButtonTitle && !readOnly && ( */}
-        <Button
-          type="button"
-          backgroundColor="transparent"
-          onClick={tempButtonOnclick}
-          fontSize="12px"
-          color="var(--textDarkGray)"
-          condition
-        >
-          {tempButtonTitle}
-        </Button>
-        {/* )} */}
+        {tempButtonTitle && (
+          <Button
+            backgroundColor="transparent"
+            onClick={tempButtonOnclick}
+            fontSize="12px"
+            color="var(--textDarkGray)"
+            condition
+          >
+            {tempButtonTitle}
+          </Button>
+        )}
       </TempButtonContainerStyle>
       <FormSectionStyle ref={formRef}>{children}</FormSectionStyle>
       <SearchBoxSectionStyle>{searchBoxComponent}</SearchBoxSectionStyle>

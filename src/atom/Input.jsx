@@ -59,6 +59,7 @@ export default function Input({
   type,
   fontSize,
   late,
+  readOnly,
 }) {
   let timer;
   const inputRef = useRef();
@@ -98,6 +99,7 @@ export default function Input({
       name={name}
       ref={inputRef}
       type={type}
+      readOnly={readOnly}
     />
   );
 }

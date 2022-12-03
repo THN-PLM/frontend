@@ -16,7 +16,6 @@ export default function ProjectListPage() {
   const navigate = useNavigate();
   const [pageCondition, setpageCondition, projectListData] =
     usePageConditionList("project", "searchText", "isManager");
-  console.log(projectListData);
   const projectRowList =
     projectListData &&
     projectListData.map((item, i) => {
@@ -26,20 +25,22 @@ export default function ProjectListPage() {
           onClick={
             pageCondition.isManager
               ? () => {
-                  navigate(`project/edit/${item.id}`);
+                  navigate(`/project/edit/${item.id}`);
                 }
-              : () => {}
+              : () => {
+                  navigate(`/project/detail/${item.id}`);
+                }
           }
           itemArray={[
-            item.itemNumber,
-            item.projectName,
-            item.type,
-            "계획시작일", // 여기나오면 하기
-            "계획종료일",
-            "생산 조직",
-            "발주처",
-            "Phase",
-            "Status",
+            item.number,
+            item.name,
+            item.type === 1 ? "양산개발" : "선행개발",
+            item.allDoStartPeriod, // 여기나오면 하기
+            item.allDoOverPeriod, // 여기나오면 하기
+            item.produceOrganization.history2,
+            item.buyer.history2,
+            item.phase,
+            item.status,
             pageCondition.isManager && (
               <ProjectManageButton
                 // disable={item.delete}

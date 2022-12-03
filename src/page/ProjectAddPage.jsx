@@ -8,31 +8,29 @@ import Button from "../atom/Button";
 import RouteInitSection from "../organism/RouteInitSection";
 import SearchBox from "../organism/SearchBox";
 import DataSearchBox from "../organism/DataSearchBox";
-import { appendProjectForm, useSave } from "../utility/Utility";
+import { appendProjectForm, useSave, usetempSave } from "../utility/Utility";
+import MemberSearchBox from "../organism/MemberSearchBox";
 
 export default function ProjectAddPage() {
   // 페이지 상태 관리
   const {
     isRouteActive,
+    //  route
+    type,
+    id,
     // searchBox
     dataSearchBoxType,
-    setDataSearchBoxProperty,
+    setdataSearchBoxProperty,
     searchBoxType,
     setsearchBoxProperty,
-    deletemember,
     // ref
     informationRef,
     attachmentRef,
     routeRef,
-    setrouteRef,
-    // routeInit
-    targetMember,
-    settargetMember,
-    members,
-    setsearchBoxType,
     initProjectModule,
     getisConditionFullfill,
   } = projectStore();
+  const projectstore = projectStore();
   const searchBoxComponentArray = [
     // <SearchBox
     //   key={0}
@@ -44,31 +42,38 @@ export default function ProjectAddPage() {
     //   members={members}
     //   deletememberArray={deletemember}
     // />,
+    <MemberSearchBox
+      key={0}
+      width="100%"
+      height="100vh - 218px"
+      isActive={searchBoxType === "members"}
+      moduleStore={projectstore}
+    />,
     <DataSearchBox
       key={1}
       width="100%"
-      setstate={(val) => setDataSearchBoxProperty(dataSearchBoxType, val)}
+      setstate={(val) => {
+        setdataSearchBoxProperty(dataSearchBoxType, val);
+      }}
       type={dataSearchBoxType}
     />,
   ];
-  const projectstore = projectStore();
   const saveProject = useSave(
     "project",
     appendProjectForm,
     projectstore
-    // temp,
     // edit,
   );
-  const saveTempProject = useSave(
+  const saveTempProject = usetempSave(
     "project",
     appendProjectForm,
-    projectstore,
-    true
-    // edit
+    projectstore
   );
   // 페이지 탈출시 init
   useEffect(() => {
-    initProjectModule();
+    return () => {
+      initProjectModule();
+    };
   }, []);
   return (
     <PageStyle>
@@ -96,7 +101,7 @@ export default function ProjectAddPage() {
             height="30px"
             color="white"
             onClick={saveProject}
-            condition={getisConditionFullfill}
+            condition={getisConditionFullfill()}
           >
             Save and Route
           </Button>
@@ -104,13 +109,11 @@ export default function ProjectAddPage() {
         <br />
         <RouteInitSection
           activate={isRouteActive}
-          //   itemType={typeId}
-          setrouteRef={setrouteRef}
-          //   itemId={itemId}
-          setsearchBoxType={setsearchBoxType}
-          targetMember={targetMember}
-          settargetMember={settargetMember}
-          members={members}
+          routeType="Proj"
+          itemId={id}
+          typeId={type}
+          moduleStore={projectstore}
+          afterUrl="/project/list"
         />
       </ScrollContainer>
     </PageStyle>

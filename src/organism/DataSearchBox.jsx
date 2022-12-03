@@ -53,6 +53,8 @@ function DataSearchBox({ width, height, setstate, document, type }) {
               value: item.value,
               classification: item.classification,
               tag: item.tag ? item.tag : "",
+              id: item.id,
+              history2: item.value,
             });
           }}
           widthArray={[1, 1, 1]}
@@ -64,8 +66,8 @@ function DataSearchBox({ width, height, setstate, document, type }) {
       );
     });
 
-  const getItemList = async () => {
-    const response = await tokenAxios.get(type);
+  const getItemTreeData = async (dtype) => {
+    const response = await tokenAxios.get(`classification/${dtype}`);
     setclassification(response.data.result.data);
   };
 
@@ -97,17 +99,20 @@ function DataSearchBox({ width, height, setstate, document, type }) {
     };
     callTree(Data, Textt);
     setselectedClassArray(tempClassArr);
-
-    // console.log(children);
   };
   useEffect(() => {
-    getItemList();
-  }, []);
+    setsearchText("");
+    setselectedClassArray([]);
+    if (type) {
+      getItemTreeData(type);
+    }
+  }, [type]);
   useEffect(() => {
     if (searchText) {
       searchFromTree(classification, searchText);
     }
   }, [searchText]);
+
   return (
     <DataSearchBoxStyle width={width} height={height} activate={type}>
       <div className="left">{itemCategoryList}</div>

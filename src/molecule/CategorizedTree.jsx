@@ -66,7 +66,6 @@ export default function CategorizedTree({
   lv2Only,
 }) {
   const [isToggle, setisToggle] = useState(false);
-
   const lv2List =
     lv2Data &&
     lv2Data.map((item, i) => {
@@ -83,6 +82,7 @@ export default function CategorizedTree({
                     {
                       value: item2.value,
                       classification: item2.classification,
+                      id: item2.id,
                     },
                   ]);
                 }}
@@ -99,13 +99,14 @@ export default function CategorizedTree({
           <div
             className="lv2Name"
             onClick={() => {
-              if (!item.c3SelectDtos[0]) {
+              if (!item.c3SelectDtos || !item.c3SelectDtos[0]) {
                 if (lv2Only) {
                   setselectedClassArray([
                     {
                       value: item.value,
                       classification: item.classification,
                       tag: item.c3SelectDtos && item.c3SelectDtos[0],
+                      id: item.id,
                     },
                   ]);
                 } else {
@@ -113,6 +114,7 @@ export default function CategorizedTree({
                     {
                       value: item.value,
                       classification: item.classification,
+                      id: item.id,
                     },
                   ]);
                 }

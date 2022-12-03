@@ -7,31 +7,30 @@ import PaginationTable from "../molecule/PaginationTable";
 import SearchBar from "../molecule/SearchBar";
 import { tokenAxios } from "../utility/Utility";
 
-const SearchBoxStyle = styled.div`
+const MemberSearchBoxStyle = styled.div`
   width: calc(${(props) => props.width});
   height: calc(${(props) => props.height});
   padding: 5% 10%;
-  display: ${(props) => (props.type ? "" : "none")};
+  display: ${(props) => (props.isActive ? "" : "none")};
   .tableSection {
     height: 80%;
   }
 `;
 
-export default function SearchBox({
+export default function MemberSearchBox({
   width,
   height,
-  type,
-  setproperty,
-  propertyIndex, // 멤버처럼 인덱스를 건드려야 할 경우
-  deletememberArray,
+  isActive,
+  moduleStore,
 }) {
+  const { members, setmembers, targetMember, deletemember } = moduleStore;
   const [searchText, setSearchText] = useState("");
   const [totalPage, setTotalPage] = useState(1);
   const [pageNum, setPageNum] = useState("0");
   const [rowsPerPage, setrowsPerPage] = useState(7);
   const [dataList, setdataList] = useState([]);
   const [index, setindex] = useState([]);
-  let widthArray = new Array(index.length).fill(4);
+  let widthArray = new Array(index.length).fill(4); //  나중에 고정값으로 바꾸기
   widthArray = index[0] === "id" ? [1, ...widthArray] : widthArray;
 
   const indexRow = (
@@ -49,61 +48,44 @@ export default function SearchBox({
         if (typeof itm === "object" && itm !== null) {
           return itm.value ? itm.value : itm.name;
         }
-
         return itm;
       });
-      // if (type === "item-candidates") {
-      //   itemArray = [itemArray[0], itemArray[1]];
-      // }
 
       return (
-        <TableRow
-          key={i}
-          onClick={() => {
-            setproperty(type, item, propertyIndex && propertyIndex);
+        <MemberRow
+          key={item.id}
+          data={item}
+          setmemberArray={(value) => {
+            setmembers(value, targetMember);
           }}
-          widthArray={widthArray}
-          // width={index.length > 5 ? "1800px" : ""}
-          itemArray={itemArray}
+          deletemember={(id) => {
+            deletemember(id, targetMember);
+          }}
+          members={
+            members[targetMember] && members[targetMember].map((id) => id.id)
+          }
         />
       );
     });
-
   useEffect(() => {
     setdataList([]);
-    if (type) {
+    if (isActive) {
       tokenAxios
-        .get(`${type}?size=${rowsPerPage}&page=${pageNum}&name=${searchText}`)
+        .get(
+          `members/page?size=${rowsPerPage}&page=${pageNum}&name=${searchText}`
+        )
         .then((res) => {
-          if (type === "releaseCoId" || type === "members") {
-            setdataList([...res.data.contents]);
-            setTotalPage(res.data.totalPages);
-            setindex(res.data.indexes);
-          } else if (type === "item-candidates") {
-            setdataList([...res.data.content]);
-            setTotalPage(res.data.totalPages);
-            setindex(["itemNumber", "itemName"]);
-          } else {
-            setdataList([...res.data.result.data.content]);
-            setTotalPage(res.data.result.data.totalPages);
-            setindex(res.data.result.data.indexes);
-          }
+          setdataList(res.data.contents);
+          setTotalPage(res.data.totalPages);
+          setindex(res.data.indexes);
         });
     }
-  }, [
-    setdataList,
-    tokenAxios,
-    type,
-    pageNum,
-    rowsPerPage,
-    propertyIndex,
-    searchText,
-  ]);
+  }, [pageNum, rowsPerPage, targetMember, searchText, isActive]);
   useEffect(() => {
     setPageNum("0");
   }, [searchText]);
   return (
-    <SearchBoxStyle width={width} height={height} type={type}>
+    <MemberSearchBoxStyle width={width} height={height} isActive={isActive}>
       <div className="searchSection">
         <SearchBar
           width="170px"
@@ -130,6 +112,6 @@ export default function SearchBox({
           {itemRowList}
         </PaginationTable>
       </div>
-    </SearchBoxStyle>
+    </MemberSearchBoxStyle>
   );
 }
