@@ -12,6 +12,7 @@ import ProjectAddPage from "./page/ProjectAddPage";
 import ProjectDetailPage from "./page/ProjectDetailPage";
 import ProjectEditPage from "./page/ProjectEditPage";
 import commonStore from "./store/commonStore";
+import SignUp from "./page/SignUp";
 
 const AppStyle = styled.div`
   width: 100%;
@@ -40,6 +41,8 @@ function App() {
       {!isLogged ? (
         <Routes>
           <Route path="/" element={<LogIn />} />
+          <Route path="/signUp" element={<SignUp />} />
+
           <Route path="*" element={<NotFound />} />
 
           {/* <Route path="/signup" element={<SignUp />} /> */}

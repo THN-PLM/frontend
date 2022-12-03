@@ -195,7 +195,7 @@ export default function AttachmentSection({
         setdateArray={setattachmentDateArray}
         setuploaderArray={setattachmentUploaderArray}
         readOnly={readOnly}
-        attachmentTagOptionList={attachmentTagOptionList}
+        tagOptionList={attachmentTagOptionList}
         editMode={editMode}
         isDeletedArray={deletedFileIdArray} // [1,3,5] : deleted = true인 애들 id값
         setidArray={setattachmentIdArray}

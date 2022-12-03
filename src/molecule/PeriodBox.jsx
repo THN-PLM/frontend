@@ -59,6 +59,8 @@ export default function PeriodBox({
           state={overState}
           setState={overSetState}
           readOnly={readOnly}
+          error={startState && overState && startState > overState}
+          errorMessage="wrong date !"
           required={required}
         />
       </div>

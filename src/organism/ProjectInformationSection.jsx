@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import LineTitle from "../atom/LineTitle";
-import {
-  GridContainerStyle,
-  PageStyle,
-  TempButtonContainerStyle,
-} from "../Style";
+import { GridContainerStyle, PageStyle } from "../Style";
 import AnimationInput from "../molecule/AnimationInput";
 import AnimationSearchInput from "../molecule/AnimationSearchInput";
 import AnimationSelectBox from "../molecule/AnimationSelectBox";
@@ -14,8 +10,8 @@ import Table from "../molecule/Table";
 import TableIndexRow from "../atom/TableIndexRow";
 import TableRow from "../atom/TableRow";
 import ModalBox from "./ModalBox";
-import Button from "../atom/Button";
-import DataSearchBox from "./DataSearchBox";
+
+import Input from "../atom/Input";
 
 export default function ProjectInformationSection({
   readOnly,
@@ -45,8 +41,8 @@ export default function ProjectInformationSection({
     mStartPeriod,
     mOverPeriod,
     productId,
-    buyerOrganizationId,
-    produceOrganizationId,
+    buyerOrganization,
+    produceOrganization,
     carTypeId,
     settype,
     setperiod,
@@ -63,8 +59,8 @@ export default function ProjectInformationSection({
     setmStartPeriod,
     setmOverPeriod,
     setproductId,
-    setbuyerOrganizationId,
-    setproduceOrganizationId,
+    setbuyerOrganization,
+    setproduceOrganization,
     setcarTypeId,
   } = projectStore();
   // scroll을 위한 ref관리
@@ -77,7 +73,15 @@ export default function ProjectInformationSection({
   return (
     <PageStyle ref={informationRef}>
       <ModalBox isActivate={isModalBox} setisActivate={setisModalBox} />
-
+      <Input
+        state={name}
+        setState={setname}
+        fontSize="16px"
+        placeholder="Type Project Name"
+        readOnly={readOnly}
+      />
+      <br />
+      <br />
       <LineTitle
         fontSize="16px"
         color="var(--eciBlue)"
@@ -121,7 +125,7 @@ export default function ProjectInformationSection({
           startSetState={type === "1" ? setallDoStartPeriod : setmStartPeriod}
           overState={type === "1" ? allDoOverPeriod : mOverPeriod}
           overSetState={type === "1" ? setallDoOverPeriod : setmOverPeriod}
-          readOnly={period > 1}
+          readOnly={readOnly || period > 1}
         />
       )}
       {period > 1 && (
@@ -132,7 +136,7 @@ export default function ProjectInformationSection({
           startSetState={setprotoStartPeriod}
           overState={protoOverPeriod}
           overSetState={setprotoOverPeriod}
-          readOnly={period > 1}
+          readOnly={readOnly || period > 2}
         />
       )}
       {period > 2 && (
@@ -143,7 +147,7 @@ export default function ProjectInformationSection({
           startSetState={setp1StartPeriod}
           overState={p1OverPeriod}
           overSetState={setp1OverPeriod}
-          readOnly={period > 1}
+          readOnly={readOnly || period > 3}
         />
       )}
       <GridContainerStyle rows={1}>
@@ -151,11 +155,11 @@ export default function ProjectInformationSection({
           width="100%"
           height="40px"
           placeholder="생산조직"
-          isNow={dataSearchBoxType === "produceOrganizationId"}
-          state={produceOrganizationId && produceOrganizationId.history2}
+          isNow={dataSearchBoxType === "produceOrganization"}
+          state={produceOrganization.history2 || ""}
           onClick={() => {
             // setsearchBoxType("");
-            setdataSearchBoxType("produceOrganizationId");
+            setdataSearchBoxType("produceOrganization");
           }}
           readOnly={readOnly}
         />
@@ -163,11 +167,11 @@ export default function ProjectInformationSection({
           width="100%"
           height="40px"
           placeholder="발주처"
-          isNow={dataSearchBoxType === "buyerOrganizationId"}
-          state={buyerOrganizationId && buyerOrganizationId.history}
+          isNow={dataSearchBoxType === "buyerOrganization"}
+          state={buyerOrganization.history2 || ""}
           onClick={() => {
-            // setsearchBoxType("");
-            setdataSearchBoxType("buyerOrganizationId");
+            // setsearchBoxType();
+            setdataSearchBoxType("buyerOrganization");
           }}
           readOnly={readOnly}
         />
@@ -183,6 +187,7 @@ export default function ProjectInformationSection({
             setisModalBox(true);
           }}
           backgroundColor="var(--eciBlue)"
+          readOnly={readOnly}
         />
         <Table width="100%" minHeight="120px">
           <TableIndexRow

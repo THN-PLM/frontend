@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import ProjectInformationSection from "../organism/ProjectInformationSection";
 import ScrollContainer from "../organism/ScrollContainer";
 import AttachmentSection from "../organism/AttachmentSection";
@@ -8,24 +10,19 @@ import Button from "../atom/Button";
 import RouteInitSection from "../organism/RouteInitSection";
 import SearchBox from "../organism/SearchBox";
 import DataSearchBox from "../organism/DataSearchBox";
+import {
+  appendProjectForm,
+  usegetProjectData,
+  useSave,
+} from "../utility/Utility";
+import RouteSection from "../organism/RouteSection";
 
 export default function ProjectEditPage() {
   // 페이지 상태 관리
   const {
     isLoading,
     setisLoading,
-    isRouteActive,
-    // searchBox
-    DataSearchBoxType,
-    setDataSearchBoxProperty,
-    searchBoxType,
-    setsearchBoxProperty,
-    deletemember,
-    // ref
-    informationRef,
-    attachmentRef,
-    routeRef,
-    setrouteRef,
+
     // routeInit
     targetMember,
     settargetMember,
@@ -33,7 +30,58 @@ export default function ProjectEditPage() {
     setsearchBoxType,
   } = projectStore();
 
+  const {
+    // route
+    isRouteActive,
+    setisRouteActivate,
+    id,
+    type,
+    // searchBox
+    dataSearchBoxType,
+    setdataSearchBoxProperty,
+    searchBoxType,
+    setsearchBoxProperty,
+    deletemember,
+    // ref
+    informationRef,
+    attachmentRef,
+    routeRef,
+    //  etc
+    initProjectModule,
+  } = projectStore();
+  const projectstore = projectStore();
+  const params = useParams();
+  const [isRouteInit, setisRouteInit] = useState(true);
+  const [isRejecting, setisRejecting] = useState(false);
+  const saveProject = useSave("project", appendProjectForm, projectstore, true);
+  const saveTempProject = useSave(
+    "project",
+    appendProjectForm,
+    projectstore
+    // true
+  );
+
+  const getprojectData = usegetProjectData(
+    params.projectId,
+    projectstore,
+    (data) => {
+      // setisRouteActivate(data.te);
+      // setisRouteInit(data);
+      //  setisRejecting()
+    }
+  );
+  //   isRouteActivate settings.
+  //  temp save -> isRoute false , route init
+  //  rejected - first => isRoute false , route init ?
+  //  save and quit ->isRoute true , route init
+  //  flow from list -> isRoute false , route init ?
+  //  review -> isROute true , route
+  //  rejected - after -> isRoute false , route
   useEffect(() => {
+    getprojectData();
+    return () => {
+      initProjectModule();
+    };
     // init
   }, []);
   return (
@@ -58,9 +106,9 @@ export default function ProjectEditPage() {
           <DataSearchBox
             key={1}
             width="100%"
-            activate={DataSearchBoxType}
-            setstate={(val) => setDataSearchBoxProperty(DataSearchBoxType, val)}
-            type={DataSearchBoxType}
+            activate={dataSearchBoxType}
+            setstate={(val) => setdataSearchBoxProperty(dataSearchBoxType, val)}
+            type={dataSearchBoxType}
           />,
         ]}
         tempButtonTitle="Save as Draft"
@@ -70,6 +118,7 @@ export default function ProjectEditPage() {
           title="Project Attachment"
           readOnly={isRouteActive}
           moduleStore={projectStore}
+          editMode
         />
         <br />
         {!isRouteActive && (
@@ -78,23 +127,30 @@ export default function ProjectEditPage() {
             width="100%"
             height="30px"
             color="white"
-            // onClick={saveProject}
+            onClick={saveProject}
             condition={!!true}
           >
             Save and Route
           </Button>
         )}
         <br />
-        <RouteInitSection
-          activate={isRouteActive}
-          //   itemType={typeId}
-          setrouteRef={setrouteRef}
-          //   itemId={itemId}
-          setsearchBoxType={setsearchBoxType}
-          targetMember={targetMember}
-          settargetMember={settargetMember}
-          members={members}
-        />
+        {isRouteInit ? (
+          <RouteInitSection
+            activate={isRouteActive}
+            routeType="Proj"
+            itemId={id}
+            typeId={type}
+            moduleStore={projectstore}
+            afterUrl="/project/list"
+          />
+        ) : (
+          <RouteSection
+            activate={isRouteActive}
+            readOnly={!isRouteActive}
+            moduleStore={projectstore}
+            rejecting={isRejecting}
+          />
+        )}
       </ScrollContainer>
     </PageStyle>
   );

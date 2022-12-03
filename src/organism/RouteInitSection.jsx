@@ -9,25 +9,29 @@ import { tokenAxios } from "../utility/Utility";
 
 const RouteInitSectionStyle = styled.div`
   position: relative;
+  display: ${(props) => (props.activate ? "" : "none")};
 `;
 const RouteContainerStyle = styled.div`
   width: 100%;
   min-height: 800px;
   margin-top: 20px;
-  display: ${(props) => (props.activate ? "" : "none")};
 `;
 
 export default function RouteInitSection({
-  setrouteRef,
-  itemType, // 타입에 따라라우트 경로를 다르게 받기
+  routeType, // 타입에 따라라우트 경로를 다르게 받기
   itemId,
+  typeId,
   activate,
-  setsearchBoxType,
-  targetMember,
-  settargetMember,
-  members,
-  url,
+  moduleStore,
+  afterUrl,
 }) {
+  const {
+    setrouteRef,
+    setsearchBoxType,
+    targetMember,
+    settargetMember,
+    members,
+  } = moduleStore;
   const { userData } = userStore();
   const [newComment, setnewComment] = useState("");
   const routeRef = useRef();
@@ -104,30 +108,18 @@ export default function RouteInitSection({
         }
       });
     }
-
-    if (itemType === "CO") {
-      formData.append("memberIds[1]", -1);
-    }
-    try {
-      await tokenAxios.post(
-        url || `/route${itemType === "project" ? "/project" : ""}`,
-        formData
-      );
-      setisLoading(false);
-      alert("라우트 등록이 완료되었습니다");
-    } catch (error) {
-      if (error.response.data.result) {
-        console.log(error.response);
-        alert(error.response.data.result.msg);
-      } else {
-        console.log(error.response);
-        navigate("/notFound");
-      }
+    const response = await tokenAxios.post(`/route/${routeType}`, formData);
+    alert("Done !");
+    if (afterUrl) {
+      navigate(afterUrl);
     }
   };
+
   const getRouteByItem = async (itemIdd) => {
-    if (itemIdd > 0) {
-      const response = await tokenAxios.get(`routeByItem/${itemIdd}`);
+    //  여기 수정해야해
+
+    if (itemIdd > 0 && activate) {
+      const response = await tokenAxios.get(`routeBy${routeType}/${itemIdd}`);
       setrouteData(response.data.result.data);
     }
   };
@@ -135,11 +127,10 @@ export default function RouteInitSection({
   useEffect(() => {
     setrouteRef(routeRef);
 
-    if (itemType) {
-      getRouteByItem(itemType);
+    if (routeType) {
+      getRouteByItem(typeId);
     }
-  }, [setrouteRef, itemType]);
-
+  }, [setrouteRef, routeType, typeId]);
   return (
     <RouteInitSectionStyle ref={routeRef}>
       <LineTitle
@@ -165,9 +156,7 @@ export default function RouteInitSection({
           width="100%"
           height="30px"
           color="white"
-          onClick={() => {
-            createRoute();
-          }}
+          onClick={createRoute}
           condition={members && members.length >= routeData.length} // 멤버 가득차면
         >
           Save and Route

@@ -2,6 +2,10 @@ import create from "zustand";
 
 const projectStore = create((set, get) => ({
   // project states
+  id: "",
+  setid: (val) => {
+    set(() => ({ id: val }));
+  },
   type: "", //  post시는 projectTypeId : 1,2
   settype: (val) => {
     set(() => ({ type: val }));
@@ -26,17 +30,17 @@ const projectStore = create((set, get) => ({
   setallDoOverPeriod: (val) => {
     set(() => ({ allDoOverPeriod: val }));
   },
-  protoStartPeriodd: "", //  날짜
-  setprotoStartPeriodd: (val) => {
-    set(() => ({ protoStartPeriodd: val }));
+  protoStartPeriod: "", //  날짜
+  setprotoStartPeriod: (val) => {
+    set(() => ({ protoStartPeriod: val }));
   },
   protoOverPeriod: "", //  날짜
   setprotoOverPeriod: (val) => {
     set(() => ({ protoOverPeriod: val }));
   },
-  p1StartPeriodd: "", // 날짜
-  setp1StartPeriodd: (val) => {
-    set(() => ({ p1StartPeriodd: val }));
+  p1StartPeriod: "", // 날짜
+  setp1StartPeriod: (val) => {
+    set(() => ({ p1StartPeriod: val }));
   },
   p1OverPeriod: "", // 날짜
   setp1OverPeriod: (val) => {
@@ -58,11 +62,11 @@ const projectStore = create((set, get) => ({
   setmOverPeriod: (val) => {
     set(() => ({ mOverPeriod: val }));
   },
-  productId: "", // 정수
+  productId: "5", // 정수
   setproductId: (val) => {
     set(() => ({ productId: val }));
   },
-  buyerOrganizationId: "", // post할때는 buyerOrganizationIdOrganizationId
+  buyerOrganization: "", // post할때는 buyerOrganizationIOrganizationI
   //   {
   //     "id": 1,
   //     "code1": "12",
@@ -70,10 +74,10 @@ const projectStore = create((set, get) => ({
   //     "history1": "해외",
   //     "history2": "나노 하이텍"
   // },
-  setbuyerOrganizationId: (val) => {
-    set(() => ({ buyerOrganizationId: val }));
+  setbuyerOrganization: (val) => {
+    set(() => ({ buyerOrganization: val }));
   },
-  produceOrganizationId: "", // post할때는producerOrganizationId
+  produceOrganization: "", // post할때는producerOrganizationI
   //   {
   //     "id": 1,
   //     "code1": "123",
@@ -81,13 +85,14 @@ const projectStore = create((set, get) => ({
   //     "history1": "본사",
   //     "history2": "1공장"
   // }
-  setproduceOrganizationId: (val) => {
-    set(() => ({ producerOrganizationId: val }));
+  setproduceOrganization: (val) => {
+    set(() => ({ produceOrganization: val }));
   },
 
   // init
   initProjectModule: () => {
     set(() => ({
+      id: "",
       type: "",
       period: "",
       number: "",
@@ -103,14 +108,52 @@ const projectStore = create((set, get) => ({
       mStartPeriod: "",
       mOverPeriod: "",
       productId: "",
-      buyerOrganizationId: "",
-      produceOrganizationId: "",
+      buyerOrganization: "",
+      produceOrganization: "",
       //  default
+      isLoading: false,
+      tempId: "",
+      routeId: "",
+      // route
+      routeNumber: "",
+      routeData: [],
+      isRouteActivate: false,
+      // route init
+      members: [],
+      targetMember: "",
+      // ref
+      informationRef: "",
+      attachmentRef: "",
+      routeRef: "",
+      // attachment
+      attachmentTagOptionList: [
+        { id: 1, name: "ETC" },
+        { id: 2, name: "개발사양서" },
+        { id: 3, name: "디자인첨부" },
+      ], // add default
+      attachmentFileArray: [],
+      attachmentOriginArray: [],
+      attachmentTagArray: [],
+      attachmentCommentArray: [],
+      attachmentUploaderArray: [],
+      attachmentDateArray: [],
+      attachmentIdArray: [],
+      attachmentModifiedAtArray: [],
+      // edit attachment
+      deletedFileIdArray: [],
+      addedAttachmentArray: [],
+      deletedAttachmentArray: [],
+      // searchBox
+      dataSearchBoxType: "",
+      searchBoxType: "",
     }));
   },
-  getIsConditionFullfill: () => {
-    let condition = false;
-    condition = !!get().type && !!get().productId;
+
+  getisConditionFullfill: () => {
+    let condition = true;
+    const { type, productId } = get();
+    console.log(type, productId);
+    condition = !!type && !!productId;
     return condition;
   },
   // default/////////////////////////////////////
@@ -146,8 +189,14 @@ const projectStore = create((set, get) => ({
   },
   // route init
   members: [],
-  setmembers: (val) => {
-    set(() => ({ members: val }));
+  setmembers: (val, index) => {
+    const tmpmember = get().members;
+    if (tmpmember[index]) {
+      tmpmember[index] = [...tmpmember[index], val];
+    } else {
+      tmpmember[index] = [val];
+    }
+    set(() => ({ members: tmpmember }));
   },
   targetMember: "",
   settargetMember: (val) => {
@@ -167,7 +216,11 @@ const projectStore = create((set, get) => ({
     set(() => ({ routeRef: val }));
   },
   // attachment
-  attachmentTagOptionList: [], // add default
+  attachmentTagOptionList: [
+    { id: 1, name: "ETC" },
+    { id: 2, name: "개발사양서" },
+    { id: 3, name: "디자인첨부" },
+  ], // add default
   setattachmentTagOptionList: (val) => {
     set(() => ({ attachmentTagOptionList: val }));
   },
@@ -224,7 +277,7 @@ const projectStore = create((set, get) => ({
   setdataSearchBoxType: (val) => {
     set(() => ({ searchBoxType: "", dataSearchBoxType: val }));
   },
-  setDataSearcBoxProperty: (type, val) => {
+  setdataSearchBoxProperty: (type, val) => {
     set(() => ({ [type]: val }));
   },
   searchBoxType: "",
@@ -234,21 +287,11 @@ const projectStore = create((set, get) => ({
   setsearchBoxProperty: (target, val, index) => {
     if (target) {
       if (index) {
-        if (target === "members") {
-          const tmpmember = get().members;
-          if (tmpmember[index]) {
-            tmpmember[index] = [...tmpmember[index], val];
-          } else {
-            tmpmember[index] = [val];
-          }
-          set(() => ({ members: tmpmember }));
-        } else {
-          const targetArray = get()[`${target}`];
-          if (Array.isArray(targetArray)) {
-            targetArray[index] = val;
-          }
-          set(() => ({ [target]: targetArray }));
+        const targetArray = get()[`${target}`];
+        if (Array.isArray(targetArray)) {
+          targetArray[index] = val;
         }
+        set(() => ({ [target]: targetArray }));
       } else {
         set(() => ({ [target]: val }));
       }

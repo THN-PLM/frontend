@@ -77,7 +77,6 @@ export default function DropdownButton({
         className="button"
         onClick={() => {
           setisToggle(!isToggle);
-          console.log(isToggle);
         }}
       >
         <span className="material-icons icon">filter_alt</span>

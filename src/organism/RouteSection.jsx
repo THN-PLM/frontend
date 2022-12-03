@@ -4,7 +4,7 @@ import styled from "styled-components";
 import LineTitle from "../atom/LineTitle";
 import SelectBox from "../atom/SelectBox";
 import RouteCommentRow from "../molecule/RouteCommentRow";
-import commonStore from "../store/commonStore";
+import { tokenAxios } from "../utility/Utility";
 
 const RouteSectionStyle = styled.div``;
 const RouteContainerStyle = styled.div`
@@ -15,16 +15,12 @@ const RouteContainerStyle = styled.div`
 `;
 
 export default function RouteSection({
-  activate,
+  activate, //  isRouteActive
   readOnly,
-  routeNumber,
-  setrouteRef,
-  routeData,
-  setrouteData,
-  rejecting,
+  rejecting, // rejecting이 on이면 모든 라우트 카드들이 검은색으로, readonly상태로 제시됨
+  moduleStore, // 해당 모듈의 스토어 객체
 }) {
-  const { tokenAxios } = commonStore();
-
+  const { setrouteRef, routeData, routeNumber, setrouteData } = moduleStore;
   const [workFlow, setworkFlow] = useState("work flow");
   const [newComment, setnewComment] = useState("");
   const [rejectTarget, setrejectTarget] = useState("");
@@ -58,7 +54,7 @@ export default function RouteSection({
   // 리젝트 타겟 기본값 넣어주기
 
   const routerList =
-    activate && routeData.routeProductList
+    activate && routeData && routeData.routeProductList
       ? routeData.routeProductList.map((router, i) => {
           return (
             <RouteCommentRow
@@ -104,7 +100,7 @@ export default function RouteSection({
 
   useEffect(() => {
     setrouteRef(routeRef);
-    if (routeNumber && routeNumber > 0) {
+    if (routeNumber && routeNumber > 0 && activate) {
       getData(routeNumber);
     }
   }, [setrouteRef, getData, routeNumber]);
