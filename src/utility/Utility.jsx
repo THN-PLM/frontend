@@ -256,7 +256,7 @@ export const useSave = (url, appendFormData, moduleStore, edit) => {
     try {
       let response = "";
       if (edit) {
-        response = await tokenAxios.put(`/${url}/temp/end/${tempId}`, formData);
+        response = await tokenAxios.put(`/${url}/temp/end/${id}`, formData);
       } else {
         response = await tokenAxios.post(`/${url}`, formData);
       }
