@@ -7,6 +7,7 @@ import UnitInput from "./UnitInput";
 import { GridContainerStyle, GridItemContainerStyle } from "../Style";
 import { unitObj } from "../utility/Source";
 import SizeInput from "./SizeInput";
+import defaultStore from "../store/defaultStore";
 
 export default function InputGrid({ readOnly, inPutList, modulestore }) {
   //   inputList Item 견본
@@ -28,7 +29,7 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
       dataSearchBoxType,
       setsearchBoxType,
       setdataSearchBoxType,
-    } = moduleStore;
+    } = defaultStore();
     switch (item.inputType) {
       case "normal": {
         resultInput = (

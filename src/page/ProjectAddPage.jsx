@@ -11,19 +11,15 @@ import DataSearchBox from "../organism/DataSearchBox";
 import { appendProjectForm, useSave, usetempSave } from "../utility/Utility";
 import MemberSearchBox from "../organism/MemberSearchBox";
 import ItemInformationSection from "../organism/ItemInformationSection";
+import defaultStore from "../store/defaultStore";
 
 export default function ProjectAddPage() {
   // 페이지 상태 관리
   const {
-    isRouteActive,
     //  route
     type,
     id,
-    // searchBox
-    dataSearchBoxType,
-    setdataSearchBoxProperty,
-    searchBoxType,
-    setsearchBoxProperty,
+
     // ref
     informationRef,
     attachmentRef,
@@ -31,6 +27,16 @@ export default function ProjectAddPage() {
     initProjectModule,
     getisConditionFullfill,
   } = projectStore();
+  const {
+    isRouteActive,
+
+    dataSearchBoxType,
+    setdataSearchBoxProperty,
+    searchBoxType,
+    setsearchBoxProperty,
+    initDefaultStore,
+  } = defaultStore();
+
   const projectstore = projectStore();
   const searchBoxComponentArray = [
     // <SearchBox
@@ -40,8 +46,7 @@ export default function ProjectAddPage() {
     //   type={searchBoxType}
     //   setproperty={setsearchBoxProperty}
     //   propertyIndex={targetMember}
-    //   members={members}
-    //   deletememberArray={deletemember}
+
     // />,
     <MemberSearchBox
       key={0}
@@ -74,12 +79,13 @@ export default function ProjectAddPage() {
   useEffect(() => {
     return () => {
       initProjectModule();
+      initDefaultStore();
     };
   }, []);
+
   return (
     <PageStyle>
       <ScrollContainer
-        isWideScroll
         scrollRefList={[
           [informationRef, "Project Information"],
           [attachmentRef, "Project Attachment"],

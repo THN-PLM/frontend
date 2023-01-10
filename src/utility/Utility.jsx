@@ -166,7 +166,7 @@ const setAttachmentArrays = (attachmentsArray, moduleStore) => {
     setattachmentUploaderArray,
     setdeletedFileIdArray,
     setattachmentModifiedAtArray,
-  } = moduleStore;
+  } = moduleStore; // defaultStore
   const tempfileArray = [];
   const temptagArray = [];
   const tempcommentArray = [];
@@ -206,7 +206,7 @@ const appendAttachmentFormData = (formData, edit, moduleStore) => {
     attachmentTagArray,
     deletedAttachmentArray,
     addedAttachmentArray,
-  } = moduleStore;
+  } = moduleStore; //  defaultStore
   if (edit) {
     // edit attachment
     addedAttachmentArray.forEach((file) => {
@@ -247,7 +247,7 @@ export const useSave = (url, appendFormData, moduleStore, edit) => {
     settempId,
     setisLoading,
     setisRouteActive,
-  } = moduleStore;
+  } = moduleStore; //  defaultStore
 
   //  각 store에 해당 속성들 꼭 있도록 확인
   const save = async () => {
@@ -275,7 +275,7 @@ export const useSave = (url, appendFormData, moduleStore, edit) => {
 export const usetempSave = (url, appendFormData, moduleStore) => {
   // url, formData추가 함수(appendFormData), store객체, temp여부, edit여부를 받아서
   //  save명령을 보내는 save함수를 반환
-  const { tempId, settempId, setisLoading, setisRouteActive } = moduleStore;
+  const { tempId, settempId, setisLoading, setisRouteActive } = moduleStore; //  defaultStore
 
   //  각 store에 해당 속성들 꼭 있도록 확인
   const save = async () => {

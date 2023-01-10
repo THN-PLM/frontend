@@ -12,6 +12,7 @@ import TableRow from "../atom/TableRow";
 import ModalBox from "./ModalBox";
 
 import Input from "../atom/Input";
+import defaultStore from "../store/defaultStore";
 
 export default function ProjectInformationSection({
   readOnly,
@@ -22,9 +23,6 @@ export default function ProjectInformationSection({
   const [isModalBox, setisModalBox] = useState(false);
   // states from store
   const {
-    dataSearchBoxType,
-    setsearchBoxType,
-    setdataSearchBoxType,
     setinformationRef,
     type,
     period,
@@ -63,6 +61,8 @@ export default function ProjectInformationSection({
     setproduceOrganization,
     setcarTypeId,
   } = projectStore();
+  const { dataSearchBoxType, setsearchBoxType, setdataSearchBoxType } =
+    defaultStore();
   // scroll을 위한 ref관리
   const informationRef = useRef();
   useEffect(() => {

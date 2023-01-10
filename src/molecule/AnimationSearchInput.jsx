@@ -30,7 +30,6 @@ const AnimationSearchInputStyle = styled.div`
   font-family: "Roboto";
   font-weight: 500;
   color: ${(props) => (props.blue ? "white" : "var(--deemGray)")};
-
   .placeholder {
     padding: 3px;
 
@@ -46,6 +45,7 @@ const AnimationSearchInputStyle = styled.div`
     background-color: transparent;
     outline: none;
     color: var(--textGray);
+    cursor: pointer;
   }
   //여기는 필히 리팩토링 하자 이게 뭐냐.
   ${(props) => {

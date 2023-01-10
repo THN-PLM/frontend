@@ -5,6 +5,7 @@ import TableRow from "../atom/TableRow";
 import MemberRow from "../molecule/MemberRow";
 import PaginationTable from "../molecule/PaginationTable";
 import SearchBar from "../molecule/SearchBar";
+import defaultStore from "../store/defaultStore";
 import { tokenAxios } from "../utility/Utility";
 
 const MemberSearchBoxStyle = styled.div`
@@ -21,9 +22,9 @@ export default function MemberSearchBox({
   width,
   height,
   isActive,
-  moduleStore,
+  // moduleStore,
 }) {
-  const { members, setmembers, targetMember, deletemember } = moduleStore;
+  const { members, setmembers, targetMember, deletemember } = defaultStore();
   const [searchText, setSearchText] = useState("");
   const [totalPage, setTotalPage] = useState(1);
   const [pageNum, setPageNum] = useState("0");

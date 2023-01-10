@@ -4,6 +4,7 @@ import styled from "styled-components";
 import LineTitle from "../atom/LineTitle";
 import SelectBox from "../atom/SelectBox";
 import RouteCommentRow from "../molecule/RouteCommentRow";
+import defaultStore from "../store/defaultStore";
 import { tokenAxios } from "../utility/Utility";
 
 const RouteSectionStyle = styled.div``;
@@ -20,7 +21,8 @@ export default function RouteSection({
   rejecting, // rejecting이 on이면 모든 라우트 카드들이 검은색으로, readonly상태로 제시됨
   moduleStore, // 해당 모듈의 스토어 객체
 }) {
-  const { setrouteRef, routeData, routeNumber, setrouteData } = moduleStore;
+  const { setrouteRef } = moduleStore;
+  const { routeData, routeNumber, setrouteData } = defaultStore();
   const [workFlow, setworkFlow] = useState("work flow");
   const [newComment, setnewComment] = useState("");
   const [rejectTarget, setrejectTarget] = useState("");

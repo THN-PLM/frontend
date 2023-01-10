@@ -8,12 +8,12 @@ import { PageStyle } from "../Style";
 import RouteSection from "../organism/RouteSection";
 
 import { usegetProjectData } from "../utility/Utility";
+import defaultStore from "../store/defaultStore";
 
 export default function ProjectDetailPage() {
   // 페이지 상태 관리
   const {
     // route
-    isRouteActive,
     // ref
     informationRef,
     attachmentRef,
@@ -21,6 +21,7 @@ export default function ProjectDetailPage() {
     //  etc
     initProjectModule,
   } = projectStore();
+  const { isRouteActive, initDefaultStore } = defaultStore();
   const projectstore = projectStore();
   const params = useParams();
   const getprojectData = usegetProjectData(params.projectId, projectstore);
@@ -28,6 +29,7 @@ export default function ProjectDetailPage() {
     getprojectData();
     return () => {
       initProjectModule();
+      initDefaultStore();
     };
     // init
   }, []);

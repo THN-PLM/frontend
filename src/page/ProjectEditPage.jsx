@@ -16,6 +16,7 @@ import {
   useSave,
 } from "../utility/Utility";
 import RouteSection from "../organism/RouteSection";
+import defaultStore from "../store/defaultStore";
 
 export default function ProjectEditPage() {
   // 페이지 상태 관리
@@ -32,15 +33,10 @@ export default function ProjectEditPage() {
 
   const {
     // route
-    isRouteActive,
-    setisRouteActivate,
     id,
     type,
     // searchBox
-    dataSearchBoxType,
-    setdataSearchBoxProperty,
-    searchBoxType,
-    setsearchBoxProperty,
+
     deletemember,
     // ref
     informationRef,
@@ -49,6 +45,15 @@ export default function ProjectEditPage() {
     //  etc
     initProjectModule,
   } = projectStore();
+  const {
+    isRouteActive,
+
+    dataSearchBoxType,
+    setdataSearchBoxProperty,
+    searchBoxType,
+    setsearchBoxProperty,
+    initDefaultStore,
+  } = defaultStore();
   const projectstore = projectStore();
   const params = useParams();
   const [isRouteInit, setisRouteInit] = useState(true);
@@ -65,12 +70,12 @@ export default function ProjectEditPage() {
     params.projectId,
     projectstore,
     (data) => {
-      // setisRouteActivate(data.te);
+      // setisRouteActive(data.te);
       // setisRouteInit(data);
       //  setisRejecting()
     }
   );
-  //   isRouteActivate settings.
+  //   isRouteActive settings.
   //  temp save -> isRoute false , route init
   //  rejected - first => isRoute false , route init ?
   //  save and quit ->isRoute true , route init
@@ -81,6 +86,7 @@ export default function ProjectEditPage() {
     getprojectData();
     return () => {
       initProjectModule();
+      initDefaultStore();
     };
     // init
   }, []);

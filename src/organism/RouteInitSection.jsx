@@ -5,6 +5,7 @@ import Button from "../atom/Button";
 import LineTitle from "../atom/LineTitle";
 import RouteCommentRow from "../molecule/RouteCommentRow";
 import { userStore } from "../store/commonStore";
+import defaultStore from "../store/defaultStore";
 import { tokenAxios } from "../utility/Utility";
 
 const RouteInitSectionStyle = styled.div`
@@ -25,13 +26,9 @@ export default function RouteInitSection({
   moduleStore,
   afterUrl,
 }) {
-  const {
-    setrouteRef,
-    setsearchBoxType,
-    targetMember,
-    settargetMember,
-    members,
-  } = moduleStore;
+  const { setrouteRef } = moduleStore;
+  const { setsearchBoxType, targetMember, settargetMember, members } =
+    defaultStore();
   const { userData } = userStore();
   const [newComment, setnewComment] = useState("");
   const routeRef = useRef();

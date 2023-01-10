@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import LineTitle from "../atom/LineTitle";
 import UploadedList from "../molecule/UploadedList";
+import defaultStore from "../store/defaultStore";
 
 const AttachmentSectionStyle = styled.div`
   pointer-events: ${(props) => (props.readOnly ? "none" : "")};
@@ -52,8 +53,8 @@ export default function AttachmentSection({
   const attachmentRef = useRef();
   const [isHistory, setisHistory] = useState(false);
 
+  const { setattachmentRef } = moduleStore();
   const {
-    setattachmentRef,
     attachmentTagOptionList,
 
     attachmentIdArray,
@@ -80,7 +81,8 @@ export default function AttachmentSection({
     addedAttachmentArray,
     setdeletedAttachmentArray,
     setaddedAttachmentArray,
-  } = moduleStore();
+  } = defaultStore();
+
   const [fileArray, setfileArray] = useState(attachmentFileArray);
   const [tagArray, settagArray] = useState(attachmentTagArray);
   const [commentArray, setcommentArray] = useState(attachmentCommentArray);
@@ -90,6 +92,7 @@ export default function AttachmentSection({
   const [modifiedAtArray, setmodifiedAtArray] = useState(
     attachmentModifiedAtArray
   );
+
   const [idArray, setidArray] = useState(attachmentIdArray);
   const setValidFile = (bool) => {
     // history에 맞게 deleted아닌 애들만 일단

@@ -23,7 +23,6 @@ export default function SearchBox({
   type,
   setproperty,
   propertyIndex, // 멤버처럼 인덱스를 건드려야 할 경우
-  deletememberArray,
 }) {
   const [searchText, setSearchText] = useState("");
   const [totalPage, setTotalPage] = useState(1);

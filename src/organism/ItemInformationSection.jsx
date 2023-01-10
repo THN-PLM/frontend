@@ -1,18 +1,19 @@
 import React, { useRef } from "react";
 import LineTitle from "../atom/LineTitle";
 import InputGrid from "../molecule/InputGrid";
+import defaultStore from "../store/defaultStore";
 import itemStore from "../store/itemStore";
 import { PageStyle } from "../Style";
-import { itemBottomInputList, itemTopInputList } from "../utility/Source";
+import { itemTopInputList } from "../utility/Source";
 
 export default function ItemInformationSection({ readOnly }) {
+  const { setinformationRef } = itemStore();
   const {
     dataSearchBoxType,
     searchBoxType,
     setsearchBoxType,
     setdataSearchBoxType,
-    setinformationRef,
-  } = itemStore();
+  } = defaultStore();
   const itemstore = itemStore();
   const informationRef = useRef();
 
