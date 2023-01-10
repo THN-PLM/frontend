@@ -10,6 +10,7 @@ import SearchBox from "../organism/SearchBox";
 import DataSearchBox from "../organism/DataSearchBox";
 import { appendProjectForm, useSave, usetempSave } from "../utility/Utility";
 import MemberSearchBox from "../organism/MemberSearchBox";
+import ItemInformationSection from "../organism/ItemInformationSection";
 
 export default function ProjectAddPage() {
   // 페이지 상태 관리
@@ -87,6 +88,7 @@ export default function ProjectAddPage() {
         tempButtonTitle="Save as Draft"
         tempButtonOnclick={saveTempProject}
       >
+        <ItemInformationSection />
         <ProjectInformationSection readOnly={isRouteActive} />
         <AttachmentSection
           title="Project Attachment"

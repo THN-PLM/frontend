@@ -1,2 +1,130 @@
 const a = true;
 export default a;
+/** inputGird용 단위 목록  */
+export const unitObj = {
+  weight: "g",
+  height: "mm",
+  width: "mm",
+  thickness: "mm",
+  modulus: "Pa",
+};
+
+//  item
+export const itemTopInputList = [
+  {
+    inputType: "normal",
+    name: "Item Classification",
+    requestName: "itemClassification",
+    required: 0,
+    choiceFields: [],
+    gray: false,
+    size: 2,
+  },
+  {
+    inputType: "normal",
+    name: "PCB Part Number",
+    requestName: "PCB Part Number",
+    required: 1,
+    choiceFields: [],
+    gray: true,
+    size: 1,
+  },
+  {
+    inputType: "normal",
+    name: "PCB Name",
+    requestName: "PCB Name",
+    required: 1,
+    choiceFields: [],
+    size: 1,
+  },
+  {
+    inputType: "normal",
+    name: "PCB Specification",
+    requestName: "PCB Specification",
+    required: 0,
+    choiceFields: [],
+    gray: true,
+    size: 1,
+  },
+  {
+    inputType: "normal",
+    name: "PCB Revision",
+    requestName: "PCB Revision",
+    required: 1,
+    choiceFields: [],
+    gray: true,
+    size: 1,
+  },
+  {
+    inputType: "normal",
+    name: "Master Main PCB Assy No",
+    requestName: "Master Main PCB Assy No",
+    required: 0,
+    choiceFields: [],
+    gray: true,
+    size: 1,
+  },
+  {
+    inputType: "div",
+    size: 1,
+  },
+];
+
+export const itemBottomInputList = [
+  {
+    inputType: "DB",
+    name: "PCB 재질",
+    requestName: "PCB 재질",
+    required: 0,
+    choiceFields: [],
+    searchType: "normal",
+    gray: false,
+    size: 1,
+  },
+  {
+    inputType: "choice",
+    name: "PCB 두께",
+    requestName: "PCB 두께",
+    required: 0,
+    choiceFields: [],
+    gray: false,
+    size: 1,
+  },
+  {
+    inputType: "choice",
+    name: "내층온즈",
+    requestName: "내층온즈",
+    required: 0,
+    choiceFields: [],
+    gray: false,
+    size: 1,
+  },
+  {
+    inputType: "choice",
+    name: "외층온즈",
+    requestName: "외층온즈",
+    required: 0,
+    choiceFields: [],
+    gray: false,
+    size: 1,
+  },
+  {
+    inputType: "DB",
+    name: "PCB도금처리",
+    requestName: "PCB도금처리",
+    required: 0,
+    choiceFields: [],
+    searchType: "normal",
+    gray: false,
+    size: 1,
+  },
+  {
+    inputType: "choice",
+    name: "Layer",
+    requestName: "Layer",
+    required: 0,
+    choiceFields: [],
+    gray: false,
+    size: 1,
+  },
+];
