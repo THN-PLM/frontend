@@ -11,11 +11,13 @@ const ScrollContainerStyle = styled.div`
 `;
 const FormSectionStyle = styled.div`
   position: relative;
-  width: calc(50% - 120px);
+  width: ${(props) =>
+    props.isWideScroll ? "calc(96% - 120px)" : "calc(50% - 120px)"};
   height: calc(100vh - 230px); //여기 픽셀 수정
-  overflow: scroll;
+  overflow-y: scroll;
   padding-left: 60px;
   padding-right: 30px;
+  padding-right: ${(props) => (props.isWideScroll ? "46%" : "30px")};
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -34,6 +36,8 @@ const FormSectionStyle = styled.div`
 `;
 const SearchBoxSectionStyle = styled.div`
   width: 46%;
+  display: ${(props) => (props.isWideScroll ? "none" : " ")};
+
   position: relative;
   :nth-child() {
     position: absolute;
@@ -46,9 +50,10 @@ export default function ScrollContainer({
   searchBoxComponent,
   tempButtonTitle, // temp에 들어갈 버튼 이름
   tempButtonOnclick,
+  isWideScroll,
 }) {
   const formRef = useRef();
-
+  //  children에서 큰 애들 구현할 때는 position:absolute달아주기
   return (
     <ScrollContainerStyle>
       <ScrollController
@@ -69,8 +74,12 @@ export default function ScrollContainer({
           </Button>
         )}
       </TempButtonContainerStyle>
-      <FormSectionStyle ref={formRef}>{children}</FormSectionStyle>
-      <SearchBoxSectionStyle>{searchBoxComponent}</SearchBoxSectionStyle>
+      <FormSectionStyle isWideScroll={isWideScroll} ref={formRef}>
+        {children}
+      </FormSectionStyle>
+      <SearchBoxSectionStyle isWideScroll={isWideScroll}>
+        {searchBoxComponent}
+      </SearchBoxSectionStyle>
     </ScrollContainerStyle>
   );
 }

@@ -53,8 +53,8 @@ export default function SizeInput({
 }) {
   //  state는 앞, 뒤를 "앞 뒤로 관리, 스페이스바 기준으로 split해서 사용"
   //  사용자가 스페이스를 쳐버리면 어캄?
-  const state1 = state.split(" ")[0];
-  const state2 = state.split(" ")[1];
+  const state1 = state && state.split(" ")[0];
+  const state2 = state && state.split(" ")[1];
   const setstate1 = (val) => {
     setState(`${val} ${state2}`);
   };

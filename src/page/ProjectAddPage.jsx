@@ -79,6 +79,7 @@ export default function ProjectAddPage() {
   return (
     <PageStyle>
       <ScrollContainer
+        isWideScroll
         scrollRefList={[
           [informationRef, "Project Information"],
           [attachmentRef, "Project Attachment"],

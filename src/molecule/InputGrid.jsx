@@ -32,10 +32,9 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
     switch (item.inputType) {
       case "normal": {
         resultInput = (
-          <GridItemContainerStyle size={item.size}>
+          <GridItemContainerStyle size={item.size} key={i}>
             <AnimationInput
               readOnly={readonly}
-              key={i}
               width="100%"
               height="40px"
               placeholder={item.name}
@@ -56,9 +55,8 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
       }
       case "unit": {
         resultInput = (
-          <GridItemContainerStyle size={item.size}>
+          <GridItemContainerStyle size={item.size} key={i}>
             <UnitInput
-              key={i}
               width="100%"
               height="40px"
               placeholder={item.name}
@@ -85,10 +83,9 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
 
       case "DB": {
         resultInput = (
-          <GridItemContainerStyle size={item.size}>
+          <GridItemContainerStyle size={item.size} key={i}>
             <AnimationSearchInput
               readOnly={readonly}
-              key={i}
               width="100%"
               height="40px"
               placeholder={item.name}
@@ -129,10 +126,9 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
           });
 
         resultInput = (
-          <GridItemContainerStyle size={item.size}>
+          <GridItemContainerStyle size={item.size} key={i}>
             <AnimationSelectBox
               readOnly={readonly}
-              key={i}
               width="100%"
               height="40px"
               placeholder={item.name}
@@ -163,10 +159,9 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
           });
 
         resultInput = (
-          <GridItemContainerStyle size={item.size}>
+          <GridItemContainerStyle size={item.size} key={i}>
             <SizeInput
               readOnly={readonly}
-              key={i}
               width="100%"
               height="40px"
               title={item.title}
@@ -188,8 +183,8 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
 
       default:
         resultInput = (
-          <GridItemContainerStyle size={item.size}>
-            <div key={i}> </div>{" "}
+          <GridItemContainerStyle size={item.size} key={i}>
+            <div> </div>{" "}
           </GridItemContainerStyle>
         );
 
