@@ -64,13 +64,19 @@ export const itemTopInputList = [
     gray: true,
     size: 1,
   },
+
   {
     inputType: "div",
-    size: 1,
+    size: 2,
   },
-];
-
-export const itemBottomInputList = [
+  {
+    inputType: "div",
+    size: 2,
+  },
+  {
+    inputType: "div",
+    size: 2,
+  },
   {
     inputType: "DB",
     name: "PCB 재질",
@@ -126,5 +132,16 @@ export const itemBottomInputList = [
     choiceFields: [],
     gray: false,
     size: 1,
+  },
+  {
+    inputType: "size",
+    name: "가로 세로",
+    requestName: "Layer",
+    required: 0,
+    choiceFields: [],
+    gray: false,
+    size: 2,
+    title: "PCB Size",
+    unit: "mm",
   },
 ];

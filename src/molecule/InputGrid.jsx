@@ -6,17 +6,20 @@ import AnimationSelectBox from "./AnimationSelectBox";
 import UnitInput from "./UnitInput";
 import { GridContainerStyle, GridItemContainerStyle } from "../Style";
 import { unitObj } from "../utility/Source";
+import SizeInput from "./SizeInput";
 
 export default function InputGrid({ readOnly, inPutList, modulestore }) {
   //   inputList Item 견본
   //   {
   //     inputType: "normal",
-  //     name: "PCB Part Number",
-  //     requestName: "PCB Part Number",
+  //     name: "PCB Part Number", unit은 "가로 세로", placeholder에 해당
+  //     requestName: "PCB Part Number", 별칭
   //     required: 1,
-  //     choiceFields: [],
+  //     choiceFields: [], choice인 경우 option에 들어감
   //     gray: true,
   //     size:1,
+  //   unit:"mm",
+  //  title: "title" unit input 앞에 들어갈거
   //   },
   const generateInput = (item, i, moduleStore, readonly) => {
     let resultInput;
@@ -148,9 +151,47 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
         );
         break;
       }
+      case "size": {
+        const optionList =
+          item.choiceFields &&
+          item.choiceFields.map((optionObject, j) => {
+            return (
+              <option key={j} value={optionObject.value}>
+                {optionObject.name}
+              </option>
+            );
+          });
+
+        resultInput = (
+          <GridItemContainerStyle size={item.size}>
+            <SizeInput
+              readOnly={readonly}
+              key={i}
+              width="100%"
+              height="40px"
+              title={item.title}
+              placeholder1={item.name && item.name.split(" ")[0]}
+              placeholder2={item.name && item.name.split(" ")[1]}
+              unit={item.unit}
+              state={
+                typeof moduleStore[item.requestName] === "object"
+                  ? moduleStore[item.requestName].name
+                  : moduleStore[item.requestName]
+              }
+              setState={moduleStore[`set${item.requestName}`]}
+              required={item.required === 1}
+            />
+          </GridItemContainerStyle>
+        );
+        break;
+      }
 
       default:
-        resultInput = <div key={i} />;
+        resultInput = (
+          <GridItemContainerStyle size={item.size}>
+            <div key={i}> </div>{" "}
+          </GridItemContainerStyle>
+        );
 
         break;
     }

@@ -38,18 +38,6 @@ export default function UnitInput({
   const setunit = (uni) => {
     setState(`${value} ${uni}`);
   };
-  // useEffect(() => {
-  //   let propVal = "";
-  //   let propUnit = "";
-  //   if (state && state.split(" ")[1]) {
-  //     [propVal, propUnit] = state.split(" ");
-  //     setvalue(propVal);
-  //     setunit(propUnit || optionArray[0].value);
-  //   }
-  // }, [state]);
-  // useEffect(() => {
-  //   setState(`${value} ${unit}`);
-  // }, [value, unit]);
   const optionList =
     optionArray &&
     optionArray.map((item, i) => {
@@ -65,6 +53,7 @@ export default function UnitInput({
         width="70%"
         height={height}
         placeholder={placeholder}
+        backgroundColor="white"
         state={value}
         setState={setvalue}
         readOnly={readOnly}

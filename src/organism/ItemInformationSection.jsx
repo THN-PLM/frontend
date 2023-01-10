@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import LineTitle from "../atom/LineTitle";
-import AnimationInput from "../molecule/AnimationInput";
 import InputGrid from "../molecule/InputGrid";
 import itemStore from "../store/itemStore";
 import { PageStyle } from "../Style";
@@ -32,13 +31,6 @@ export default function ItemInformationSection({ readOnly }) {
         modulestore={itemstore}
         inPutList={itemTopInputList}
       />
-      <br />
-      <br />
-      <InputGrid
-        readOnly={readOnly}
-        modulestore={itemstore}
-        inPutList={itemBottomInputList}
-      />{" "}
     </PageStyle>
   );
 }
