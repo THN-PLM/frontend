@@ -34,3 +34,13 @@ export const GridContainerStyle = styled.div`
   grid-column-gap: 15px;
   grid-row-gap: 10px;
 `;
+export const RowContainerStyle = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  /* grid-template-rows: repeat(${(props) => props.rows}, 60px); */
+  grid-column-gap: 15px;
+  grid-row-gap: 10px;
+`;
+export const GridItemContainerStyle = styled.div`
+  grid-column: ${(props) => (props.size === 2 ? "1/3" : "")};
+`;
