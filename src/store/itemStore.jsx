@@ -45,7 +45,7 @@ const itemStore = create((set, get) => ({
     sourceObjArr
       .map((obj) => obj.requestName)
       .forEach((stateName) => {
-        newObj.stateName = "";
+        newObj[stateName] = newObj[stateName] ? newObj[stateName] : "";
       });
 
     set(() => ({
