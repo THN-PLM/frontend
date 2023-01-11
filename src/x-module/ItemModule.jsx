@@ -7,7 +7,7 @@ import LoadingArrowAnimation from "../molecule/LoadingArrowAnimation";
 import BoldText from "../atom/BoldText";
 import defaultStore from "../store/defaultStore";
 
-export default function ProjectModule() {
+export default function ItemModule() {
   const { isLoading } = defaultStore();
   return (
     <ModuleStyle>
@@ -23,15 +23,11 @@ export default function ProjectModule() {
         thing up for you!
       </LoadingBox>{" "}
       <ModuleTopNavigation
-        title="Project"
+        title="Item"
         navList={[
           {
             name: "List",
             to: "/project/list",
-          },
-          {
-            name: "Add New Project",
-            to: "/project/add",
           },
         ]}
       />

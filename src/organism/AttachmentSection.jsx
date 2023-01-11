@@ -53,7 +53,7 @@ export default function AttachmentSection({
   const attachmentRef = useRef();
   const [isHistory, setisHistory] = useState(false);
 
-  const { setattachmentRef } = moduleStore();
+  const { setattachmentRef } = moduleStore;
   const {
     attachmentTagOptionList,
 

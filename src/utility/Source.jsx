@@ -1,5 +1,14 @@
-const a = true;
-export default a;
+const fortyTwo = true;
+export default fortyTwo;
+export const navBarArray = [
+  { name: "Home", src: "home", to: "/" },
+  { name: "Project", src: "lightbulb", to: "/project/list" },
+  { name: "Design Change", src: "published_with_changes", to: "/" },
+  { name: "Item", src: "build", to: "/item" },
+  { name: "Product", src: "settings_input_component", to: "/" },
+  { name: "Release", src: "exit_to_app", to: "/" },
+  { name: "Receipt/ Payment", src: "attach_money", to: "/" },
+];
 /** inputGird용 단위 목록  */
 export const unitObj = {
   weight: "g",

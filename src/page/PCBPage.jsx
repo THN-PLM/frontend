@@ -2,60 +2,58 @@ import React, { useEffect, useRef, useState } from "react";
 import ProjectInformationSection from "../organism/ProjectInformationSection";
 import ScrollContainer from "../organism/ScrollContainer";
 import AttachmentSection from "../organism/AttachmentSection";
-import projectStore from "../store/projectStore";
 import { PageStyle } from "../Style";
 import Button from "../atom/Button";
 import RouteInitSection from "../organism/RouteInitSection";
 import SearchBox from "../organism/SearchBox";
 import DataSearchBox from "../organism/DataSearchBox";
-import { appendProjectForm, useSave, usetempSave } from "../utility/Utility";
+import { appendPCBForm, useSave, usetempSave } from "../utility/Utility";
 import MemberSearchBox from "../organism/MemberSearchBox";
 import defaultStore from "../store/defaultStore";
+import PCBStore from "../store/PCBStore";
 
-export default function ProjectAddPage() {
+export default function PCBPage({ type }) {
   // 페이지 상태 관리
   const {
     //  route
-    type,
     id,
 
     // ref
     informationRef,
     attachmentRef,
     routeRef,
-    initProjectModule,
+    initPCBStore,
     getisConditionFullfill,
-  } = projectStore();
+  } = PCBStore();
   const {
     isRouteActive,
-
     dataSearchBoxType,
     setdataSearchBoxProperty,
     searchBoxType,
     setsearchBoxProperty,
     initDefaultStore,
+    targetMember,
   } = defaultStore();
-
-  const projectstore = projectStore();
+  const pcbstore = PCBStore();
+  const defaultstore = defaultStore();
   const searchBoxComponentArray = [
-    // <SearchBox
-    //   key={0}
-    //   width="100%"
-    //   height="100vh - 218px"
-    //   type={searchBoxType}
-    //   setproperty={setsearchBoxProperty}
-    //   propertyIndex={targetMember}
-
-    // />,
-    <MemberSearchBox
+    <SearchBox
       key={0}
       width="100%"
       height="100vh - 218px"
+      type={searchBoxType}
+      setproperty={setsearchBoxProperty}
+      propertyIndex={targetMember}
+    />,
+    <MemberSearchBox
+      key={1}
+      width="100%"
+      height="100vh - 218px"
       isActive={searchBoxType === "members"}
-      moduleStore={projectstore}
+      moduleStore={pcbstore}
     />,
     <DataSearchBox
-      key={1}
+      key={2}
       width="100%"
       setstate={(val) => {
         setdataSearchBoxProperty(dataSearchBoxType, val);
@@ -63,21 +61,16 @@ export default function ProjectAddPage() {
       type={dataSearchBoxType}
     />,
   ];
-  const saveProject = useSave(
-    "project",
-    appendProjectForm,
-    projectstore
-    // edit,
+  const savePCB = useSave(
+    "pcb",
+    appendPCBForm,
+    pcbstore // edit,
   );
-  const saveTempProject = usetempSave(
-    "project",
-    appendProjectForm,
-    projectstore
-  );
+  const saveTempPCB = usetempSave("pcb", appendPCBForm, pcbstore);
   // 페이지 탈출시 init
   useEffect(() => {
     return () => {
-      initProjectModule();
+      initPCBStore();
       initDefaultStore();
     };
   }, []);
@@ -86,19 +79,18 @@ export default function ProjectAddPage() {
     <PageStyle>
       <ScrollContainer
         scrollRefList={[
-          [informationRef, "Project Information"],
-          [attachmentRef, "Project Attachment"],
+          [informationRef, "PCB Information"],
+          [attachmentRef, "PCB Attachment"],
           [routeRef, "Route Information"],
         ]}
         searchBoxComponent={searchBoxComponentArray}
         tempButtonTitle="Save as Draft"
-        tempButtonOnclick={saveTempProject}
+        tempButtonOnclick={saveTempPCB}
       >
-        <ProjectInformationSection readOnly={isRouteActive} />
         <AttachmentSection
-          title="Project Attachment"
+          title="Item Attachment"
           readOnly={isRouteActive}
-          moduleStore={projectstore}
+          moduleStore={pcbstore}
         />
         <br />
         {!isRouteActive && (
@@ -107,7 +99,7 @@ export default function ProjectAddPage() {
             width="100%"
             height="30px"
             color="white"
-            onClick={saveProject}
+            onClick={savePCB}
             condition={getisConditionFullfill()}
           >
             Save and Route
@@ -119,8 +111,8 @@ export default function ProjectAddPage() {
           routeType="Proj"
           itemId={id}
           typeId={type}
-          moduleStore={projectstore}
-          afterUrl="/project/list"
+          moduleStore={pcbstore}
+          afterUrl="/item/list"
         />
       </ScrollContainer>
     </PageStyle>

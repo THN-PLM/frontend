@@ -1,7 +1,7 @@
 import create from "zustand";
 import produce from "immer";
 
-const itemStore = create((set, get) => ({
+const PCBStore = create((set, get) => ({
   stateObj: {},
 
   setStateByKey: (key) => {
@@ -37,6 +37,7 @@ const itemStore = create((set, get) => ({
       }));
     }
   },
+
   initStateObj: (sourceObjArr) => {
     //  sourceObj에서 키값들을 빼와 stateObj의 기본 키값 초기화
     //  기존에 있는 키값에 새로운 키값을 더함(inputGrid 여러개 사용 대응)
@@ -73,4 +74,4 @@ const itemStore = create((set, get) => ({
     return condition;
   },
 }));
-export default itemStore;
+export default PCBStore;

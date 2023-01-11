@@ -6,6 +6,7 @@ import NavBarCategoryBox from "../molecule/NavBarCategoryBox";
 import NavBarLogoBox from "../molecule/NavBarLogoBox";
 import NavBarBackground from "../molecule/NavBarBackground";
 import NavBarUserBox from "../molecule/NavBarUserBox";
+import { navBarArray } from "../utility/Source";
 
 const NavigationBarStyle = styled.div`
   height: 100vh;
@@ -30,12 +31,7 @@ export default function NavigationBar({ isHover, setisHover }) {
   const [currentModuleNum, setcurrentModuleNum] = useState(
     moduleArray.indexOf(window.location.pathname.split("/")[1])
   );
-  const navBarArray = [
-    { name: "Home", src: "home", to: "/" },
-    { name: "Project", src: "lightbulb", to: "/project/list" },
-    { name: "Design Change", src: "published_with_changes", to: "/" },
-    { name: "Item", src: "build", to: "/item" },
-  ];
+
   const navBarList = navBarArray.map((module, i) => {
     return (
       <NavBarCategoryBox

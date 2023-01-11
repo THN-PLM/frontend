@@ -6,7 +6,7 @@ import itemStore from "../store/itemStore";
 import { PageStyle } from "../Style";
 import { itemTopInputList } from "../utility/Source";
 
-export default function ItemInformationSection({ readOnly }) {
+export default function PCBInformationSection({ readOnly }) {
   const { setinformationRef } = itemStore();
   const {
     dataSearchBoxType,

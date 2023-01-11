@@ -45,7 +45,7 @@ export default function ProjectDetailPage() {
         <ProjectInformationSection readOnly />
         <AttachmentSection
           title="Project Attachment"
-          moduleStore={projectStore}
+          moduleStore={projectstore}
           readOnly
         />
         <br />

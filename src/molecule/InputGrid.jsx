@@ -21,6 +21,7 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
   //     size:1,
   //     unit:"mm",
   //     title: "title" unit input 앞에 들어갈거
+  //     readOnly 추가
   //   },
   const {
     searchBoxType,
@@ -37,7 +38,7 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
         resultInput = (
           <GridItemContainerStyle size={item.size} key={i}>
             <AnimationInput
-              readOnly={readonly}
+              readOnly={item.readOnly || readonly}
               width="100%"
               height="40px"
               placeholder={item.name}
@@ -88,7 +89,7 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
         resultInput = (
           <GridItemContainerStyle size={item.size} key={i}>
             <AnimationSearchInput
-              readOnly={readonly}
+              readOnly={item.readOnly || readonly}
               width="100%"
               height="40px"
               placeholder={item.name}
@@ -131,7 +132,7 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
         resultInput = (
           <GridItemContainerStyle size={item.size} key={i}>
             <AnimationSelectBox
-              readOnly={readonly}
+              readOnly={item.readOnly || readonly}
               width="100%"
               height="40px"
               placeholder={item.name}
@@ -164,7 +165,7 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
         resultInput = (
           <GridItemContainerStyle size={item.size} key={i}>
             <SizeInput
-              readOnly={readonly}
+              readOnly={item.readOnly || readonly}
               width="100%"
               height="40px"
               title={item.title}

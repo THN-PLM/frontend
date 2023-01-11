@@ -123,7 +123,7 @@ export default function ProjectEditPage() {
         <AttachmentSection
           title="Project Attachment"
           readOnly={isRouteActive}
-          moduleStore={projectStore}
+          moduleStore={projectstore}
           editMode
         />
         <br />

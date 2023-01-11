@@ -13,6 +13,9 @@ import ProjectDetailPage from "./page/ProjectDetailPage";
 import ProjectEditPage from "./page/ProjectEditPage";
 import commonStore from "./store/commonStore";
 import SignUp from "./page/SignUp";
+import ItemModule from "./x-module/ItemModule";
+import ItemListPage from "./page/ItemListPage";
+import PCBPage from "./page/PCBPage";
 
 const AppStyle = styled.div`
   width: 100%;
@@ -64,7 +67,25 @@ function App() {
                 />
                 <Route path="edit/:projectId" element={<ProjectEditPage />} />
               </Route>
+              <Route path="/item" element={<ItemModule />}>
+                <Route path="list" element={<ItemListPage />} />
+                <Route path="pcb/add" element={<PCBPage type="add" />} />
+                <Route
+                  path="pcb/detail/:id"
+                  element={<PCBPage type="detail" />}
+                />
+                <Route
+                  path="pcb/editS/:id"
+                  element={<PCBPage type="editS" />}
+                />
+                <Route
+                  path="pcb/editD/:id"
+                  element={<PCBPage type="editD" />}
+                />
+                <Route path="pcb/" element={<PCBPage type="add" />} />
 
+                <Route path="" element={<ItemListPage />} />
+              </Route>
               {/* <Route path="/item" element={<ItemModule />}>
                 <Route path="" element={<ItemListPage />} />
                 <Route path="add/:id" element={<ItemAddPage />} />
