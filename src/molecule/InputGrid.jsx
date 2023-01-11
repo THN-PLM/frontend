@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import AnimationInput from "./AnimationInput";
 import AnimationSearchInput from "./AnimationSearchInput";
@@ -19,17 +19,19 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
   //     choiceFields: [], choice인 경우 option에 들어감
   //     gray: true,
   //     size:1,
-  //   unit:"mm",
-  //  title: "title" unit input 앞에 들어갈거
+  //     unit:"mm",
+  //     title: "title" unit input 앞에 들어갈거
   //   },
-  const generateInput = (item, i, moduleStore, readonly) => {
+  const {
+    searchBoxType,
+    dataSearchBoxType,
+    setsearchBoxType,
+    setdataSearchBoxType,
+  } = defaultStore();
+  const { objState, setStateOBj, initStateObj } = modulestore;
+  const generateInput = (item, i, readonly) => {
+    //  inputOb를 받아서 해당하는 인풋 생성
     let resultInput;
-    const {
-      searchBoxType,
-      dataSearchBoxType,
-      setsearchBoxType,
-      setdataSearchBoxType,
-    } = defaultStore();
     switch (item.inputType) {
       case "normal": {
         resultInput = (
@@ -40,12 +42,12 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
               height="40px"
               placeholder={item.name}
               state={
-                typeof moduleStore[item.requestName] === "object" &&
-                moduleStore[item.requestName]
-                  ? moduleStore[item.requestName].name
-                  : moduleStore[item.requestName]
+                typeof objState[item.requestName] === "object" &&
+                objState[item.requestName]
+                  ? objState[item.requestName].name
+                  : objState[item.requestName]
               }
-              setState={moduleStore[`set${item.requestName}`]}
+              setState={setStateOBj(item.requestName)}
               required={item.required === 1}
               backgroundColor={item.gray && "var(--textGray)"}
             />
@@ -62,12 +64,12 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
               height="40px"
               placeholder={item.name}
               state={
-                typeof moduleStore[item.requestName] === "object" &&
-                moduleStore[item.requestName]
-                  ? moduleStore[item.requestName].name
-                  : moduleStore[item.requestName]
+                typeof objState[item.requestName] === "object" &&
+                objState[item.requestName]
+                  ? objState[item.requestName].name
+                  : objState[item.requestName]
               }
-              setState={moduleStore[`set${item.requestName}`]}
+              setState={setStateOBj(item.requestName)}
               required={item.required === 1}
               optionArray={[
                 {
@@ -91,9 +93,9 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
               height="40px"
               placeholder={item.name}
               state={
-                typeof moduleStore[item.requestName] === "object"
-                  ? moduleStore[item.requestName].name
-                  : moduleStore[item.requestName]
+                typeof objState[item.requestName] === "object"
+                  ? objState[item.requestName].name
+                  : objState[item.requestName]
               }
               onClick={() => {
                 //   setisClassificationBox(false);
@@ -104,8 +106,8 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
                 }
               }}
               isNow={
-                moduleStore[item.requestName] === searchBoxType ||
-                moduleStore[item.requestName] === dataSearchBoxType
+                objState[item.requestName] === searchBoxType ||
+                objState[item.requestName] === dataSearchBoxType
               }
               required={item.required === 1}
               backgroundColor={item.gray && "var(--textGray)"}
@@ -134,11 +136,11 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
               height="40px"
               placeholder={item.name}
               state={
-                typeof moduleStore[item.requestName] === "object"
-                  ? moduleStore[item.requestName].name
-                  : moduleStore[item.requestName]
+                typeof objState[item.requestName] === "object"
+                  ? objState[item.requestName].name
+                  : objState[item.requestName]
               }
-              setState={moduleStore[`set${item.requestName}`]}
+              setState={setStateOBj(item.requestName)}
               required={item.required === 1}
               backgroundColor={item.gray && "var(--textGray)"}
             >
@@ -170,11 +172,11 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
               placeholder2={item.name && item.name.split(" ")[1]}
               unit={item.unit}
               state={
-                typeof moduleStore[item.requestName] === "object"
-                  ? moduleStore[item.requestName].name
-                  : moduleStore[item.requestName]
+                typeof objState[item.requestName] === "object"
+                  ? objState[item.requestName].name
+                  : objState[item.requestName]
               }
-              setState={moduleStore[`set${item.requestName}`]}
+              setState={setStateOBj(item.requestName)}
               required={item.required === 1}
             />
           </GridItemContainerStyle>
@@ -193,6 +195,10 @@ export default function InputGrid({ readOnly, inPutList, modulestore }) {
     }
     return resultInput;
   };
+  //  ?init을 인풋 생성하면서 하나씩 vs 인풋그리드 렌더링 할 때 한번에
+  useEffect(() => {
+    initStateObj(inPutList);
+  }, []);
 
   return (
     <GridContainerStyle>

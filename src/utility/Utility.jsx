@@ -411,3 +411,15 @@ export const usegetProjectData = (id, projectStore, callBack) => {
     }
   };
 };
+export const appendPCBForm = (edit, itemStore) => {
+  const { stateObj } = itemStore;
+  const formData = new FormData();
+  Object.keys(stateObj).forEach((key) => {
+    formData.append(key, stateObj[key]);
+  });
+  appendAttachmentFormData(formData, edit, itemStore);
+
+  //  추가할 애들 관리
+
+  return formData;
+};
